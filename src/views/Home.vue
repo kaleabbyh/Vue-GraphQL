@@ -1,23 +1,25 @@
 <template>
-  <!-- <div class="absolute inset-0">
+  <div class="mt-20 pt-2">
     <img
-      src="https://th.bing.com/th/id/OIP.8_GJE3mBavuXiGblgMcNvgHaLH?pid=ImgDet&rs=1"
+      src="../assets/images/food.png"
       alt="Background Image"
-      class="absolute inset-0 object-cover w-full h-full"
+      class="object-cover w-full h-96 opacity-70 bg-cover"
     />
     <div
       class="overlay absolute inset-0 flex flex-col items-center justify-center text-white p-8"
     >
-      <h1 class="text-4xl font-bold mb-4">Fantastic Terms</h1>
+      <h1 class="text-4xl font-bold mb-4">Special Foods Recipes</h1>
       <p class="text-lg">Explore delicious food recipes</p>
     </div>
-  </div> -->
+  </div>
 
-  <div class="relative" style="z-index: 1">
+  <div class="relative" style="z-index: 1; overflow-y: scroll">
     <div class="bg-gray-100">
-      <div class="container mx-auto py-8">
-        <h1 class="text-3xl font-bold mb-4">Welcome to Food Recipes</h1>
-        <p class="text-gray-600 mb-8">
+      <div class="container py-8 px-6">
+        <h1 class="text-3xl font-bold mb-4 flex items-center justify-center">
+          Welcome to KRecipes
+        </h1>
+        <p class="text-gray-600 mb-8 flex items-center justify-center">
           Discover delicious recipes for every occasion
         </p>
 

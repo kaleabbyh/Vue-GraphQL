@@ -1,39 +1,55 @@
 <template>
-  <nav class="bg-white shadow-lg">
+  <nav class="bg-white shadow-lg fixed w-full z-10">
     <div class="container mx-auto px-6 py-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <img
-            class="h-8 w-auto md:h-12 md:w-25"
-            src="../assets/images/recipe-logo.png"
-            alt="Logo"
-          />
-          <router-link to="/" class="text-xl font-semibold text-gray-800 ml-2"
-            >Food Recipes</router-link
-          >
+          <router-link to="/" class="ml-2">
+            <img
+              class="h-8 md:h-12"
+              src="../assets/images/recipe-logo.png"
+              alt="Logo"
+              style="width: auto"
+          /></router-link>
         </div>
         <div class="flex items-center">
-          <div class="hidden md:block">
-            <a
+          <div class="hidden md:flex items-center">
+            <router-link
               class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
-              href="#"
-              >Home</a
+              to="/"
+              >Home</router-link
             >
             <a
               class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
               href="#"
               >Recipes</a
             >
-            <a
+            <router-link
               class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
-              href="#"
-              >About</a
+              to="/aboutus"
+              >About</router-link
             >
-            <a
+            <router-link
               class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
-              href="#"
-              >Contact</a
+              to="/contactus"
+              >Contact</router-link
             >
+
+            <router-link
+              class="text-lg font-semibold text-indigo-900 hover:text-gray-600 px-3 py-2 rounded-md"
+              to="/login"
+            >
+              <img
+                src="../assets/images/person.png"
+                alt="Image"
+                class="w-6 h-6"
+              />
+            </router-link>
+            <router-link
+              class="text-lg font-semibold text-indigo-900 hover:text-gray-600 px-3 py-2 rounded-md"
+              to="/profile"
+            >
+              profile
+            </router-link>
           </div>
           <div class="md:hidden">
             <button

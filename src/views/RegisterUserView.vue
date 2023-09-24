@@ -1,7 +1,7 @@
 <template>
-  <div class="flex items-center justify-center h-screen">
+  <div class="flex items-center justify-center h-screen bg-login-image">
     <div
-      class="max-w-xl w-full mx-4 border border-blue-100 rounded-md shadow-md"
+      class="max-w-xl w-full mx-4 border bg-white border-blue-100 rounded-md shadow-md"
     >
       <form @submit.prevent="submitForm" class="bg-white rounded p-8 my-4">
         <div class="mb-4">
@@ -84,3 +84,11 @@ export default {
   // Component code...
 };
 </script>
+
+<style scoped>
+.bg-login-image {
+  background-image: url("../assets/images/food.png");
+  background-size: cover;
+  background-position: center;
+}
+</style>

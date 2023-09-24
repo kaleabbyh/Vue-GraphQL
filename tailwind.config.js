@@ -7,7 +7,6 @@ export default {
       Sans: ["Nunito Sans", "sans-serif"],
     },
     container: {
-      padding: "12rem",
       center: true,
     },
   },

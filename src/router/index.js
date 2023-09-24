@@ -4,6 +4,10 @@ import AddUserView from "../views/AddUserView.vue";
 import RegisterUserView from "../views/RegisterUserView.vue";
 import LoginUserView from "../views/LoginUserView.vue";
 import RecipeDetailsView from "../views/RecipeDetailsView.vue";
+import AboutUsView from "../views/AboutUsView.vue";
+import ContactUsView from "../views/ContactUsView.vue";
+import AddRecipeView from "../views/AddRecipeView.vue";
+import ProfileView from "../views/ProfileView.vue";
 import Home from "../views/Home.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +33,11 @@ const router = createRouter({
       component: LoginUserView,
     },
     {
+      path: "/profile",
+      name: "profile",
+      component: ProfileView,
+    },
+    {
       path: "/recipedetails/:id",
       name: "recipedetails",
       component: RecipeDetailsView,
@@ -37,6 +46,21 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home,
+    },
+    {
+      path: "/aboutus",
+      name: "about",
+      component: AboutUsView,
+    },
+    {
+      path: "/contactus",
+      name: "contact",
+      component: ContactUsView,
+    },
+    {
+      path: "/addrecipe",
+      name: "addrecipe",
+      component: AddRecipeView,
     },
   ],
 });
