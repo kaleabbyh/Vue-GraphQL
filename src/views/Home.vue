@@ -1,0 +1,52 @@
+<template>
+  <!-- <div class="absolute inset-0">
+    <img
+      src="https://th.bing.com/th/id/OIP.8_GJE3mBavuXiGblgMcNvgHaLH?pid=ImgDet&rs=1"
+      alt="Background Image"
+      class="absolute inset-0 object-cover w-full h-full"
+    />
+    <div
+      class="overlay absolute inset-0 flex flex-col items-center justify-center text-white p-8"
+    >
+      <h1 class="text-4xl font-bold mb-4">Fantastic Terms</h1>
+      <p class="text-lg">Explore delicious food recipes</p>
+    </div>
+  </div> -->
+
+  <div class="relative" style="z-index: 1">
+    <div class="bg-gray-100">
+      <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-4">Welcome to Food Recipes</h1>
+        <p class="text-gray-600 mb-8">
+          Discover delicious recipes for every occasion
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <RecipeCard
+            v-for="recipe in recipes"
+            :key="recipe.id"
+            :recipe="recipe"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import RecipeCard from "../components/RecipeCard.vue";
+import { recipes } from "../constants/recipes";
+
+export default {
+  name: "HomePage",
+  components: { RecipeCard },
+  data() {
+    return {
+      recipes: recipes,
+    };
+  },
+};
+</script>
+
+<style>
+/* Add custom styles here if needed */
+</style>

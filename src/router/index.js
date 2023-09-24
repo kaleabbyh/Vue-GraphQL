@@ -3,12 +3,14 @@ import HomeView from "../views/HomeView.vue";
 import AddUserView from "../views/AddUserView.vue";
 import RegisterUserView from "../views/RegisterUserView.vue";
 import LoginUserView from "../views/LoginUserView.vue";
+import RecipeDetailsView from "../views/RecipeDetailsView.vue";
+import Home from "../views/Home.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      name: "home",
+      path: "/home",
+      name: "homeview",
       component: HomeView,
     },
     {
@@ -25,6 +27,16 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginUserView,
+    },
+    {
+      path: "/recipedetails/:id",
+      name: "recipedetails",
+      component: RecipeDetailsView,
+    },
+    {
+      path: "/",
+      name: "home",
+      component: Home,
     },
   ],
 });

@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
-      Roboto: ["Roboto, sans-serif"],
+      Sans: ["Nunito Sans", "sans-serif"],
     },
     container: {
       padding: "12rem",

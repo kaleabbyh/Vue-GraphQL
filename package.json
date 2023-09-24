@@ -12,8 +12,11 @@
     "@vue/apollo-composable": "^4.0.0-beta.11",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
+    "swiper": "^10.3.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.5"
+    "vue-carousel": "^0.18.0",
+    "vue-router": "^4.2.5",
+    "vue-slick-carousel": "^1.0.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
