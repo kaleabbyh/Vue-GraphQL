@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center h-screen bg-login-image">
+  <div class="flex items-center justify-center h-screen bg-login-image mt-20">
     <div
       class="max-w-xl w-full mx-4 border bg-white border-blue-100 rounded-md shadow-md"
     >

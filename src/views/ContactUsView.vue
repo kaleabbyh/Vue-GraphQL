@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-contact-image bg-cover bg-center pt-20">
-    <div class="bg-opacity-50 bg-white">
+  <div class="bg-contact-image bg-cover bg-center">
+    <div class="bg-opacity-50 bg-white py-20">
       <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-8">
         Contact Us
       </h2>
 
       <p
-        class="text-gray-800 text-center text-xl font-medium mb-8 mx-20 md:mx-80"
+        class="text-gray-800 text-center text-xl bg-white rounded-lg p-5 bg-opacity-50 font-medium mb-8 mx-20 md:mx-80"
       >
         We would love to hear from you! Please fill out the form below or reach
         out to us using the contact information provided.
@@ -79,7 +79,7 @@
 
         <div>
           <div
-            class="max-w-md mr-40 justify-start bg-white shadow-lg rounded-lg px-8 py-6"
+            class="max-w-md mr-40 justify-start h-full bg-white shadow-lg rounded-lg px-8 py-6"
           >
             <p class="text-gray-700">
               You can also reach us using the following contact information:
@@ -123,5 +123,8 @@ export default {
 <style>
 .bg-contact-image {
   background-image: url("../assets/images/food.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 </style>
