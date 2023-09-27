@@ -1,129 +1,206 @@
 <template>
-  <div class="recipe-registration w-full pt-20 md:pt-32">
-    <h1 class="mx-10 text-2xl font-medium">Add Recipe</h1>
-    <form @submit.prevent="registerRecipe" class="form">
-      <div class="form-group">
-        <label for="recipeName">Recipe Name:</label>
-        <input type="text" id="recipeName" v-model="recipeName" required />
+  <div class="recipe-registration py-20 md:py-32">
+    <h1 class="text-2xl text-center font-semibold">Add Recipe</h1>
+    <form
+      @submit.prevent="addRecipe"
+      class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
+    >
+      <div class="mb-6">
+        <label for="title" class="block font-medium mb-1">Recipe Title:</label>
+        <input
+          v-model="title"
+          type="text"
+          id="title"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
       </div>
 
-      <div class="form-group">
-        <label for="ingredients">Ingredients:</label>
-        <select
-          id="ingredients"
-          v-model="selectedIngredients"
-          multiple
-          required
+      <div class="mb-6">
+        <label for="category" class="block font-medium mb-1"
+          >Recipe Category:</label
         >
+        <select
+          v-model="category_id"
+          id="category"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        >
+          <option disabled value="">Select Category</option>
           <option
-            v-for="ingredient in ingredients"
-            :key="ingredient.id"
-            :value="ingredient.id"
+            v-for="category in categoryList"
+            :key="category.id"
+            :value="category.id"
           >
-            {{ ingredient.name }}
+            {{ category.name }}
           </option>
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="instructions">Instructions:</label>
-        <textarea id="instructions" v-model="instructions" required></textarea>
+      <div class="mb-6">
+        <label for="description" class="block font-medium mb-1"
+          >description:</label
+        >
+        <textarea
+          v-model="description"
+          id="description"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        ></textarea>
       </div>
 
-      <button type="submit" class="submit-button">Register Recipe</button>
+      <div class="mb-6">
+        <label for="image1" class="block font-medium mb-1">Image 1:</label>
+        <input
+          v-model="image1"
+          type="text"
+          id="image1"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+      </div>
+      <div class="mb-6">
+        <label for="image2" class="block font-medium mb-1">Image 2:</label>
+        <input
+          v-model="image2"
+          type="text"
+          id="image2"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+      </div>
+
+      <div class="mb-6">
+        <label for="image3" class="block font-medium mb-1">Image 3:</label>
+        <input
+          v-model="image3"
+          type="text"
+          id="image3"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+      </div>
+
+      <div class="mb-6">
+        <label for="cooking_time" class="block font-medium mb-1"
+          >Cooking Time:</label
+        >
+        <input
+          v-model="cooking_time"
+          type="number"
+          id="cooking_time"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+      </div>
+
+      <div class="mb-6">
+        <label for="preparation_time" class="block font-medium mb-1"
+          >Preparation time:</label
+        >
+        <input
+          v-model="preparation_time"
+          type="number"
+          id="preparation_time"
+          required
+          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      >
+        Add Recipe
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-export default {
-  name: "RecipeRegistration",
-  data() {
-    return {
-      recipeName: "",
-      selectedIngredients: [],
-      instructions: "",
-      ingredients: [], // Placeholder for the list of ingredients
-    };
-  },
-  mounted() {
-    // Make an API call to retrieve the list of ingredients from the database
-    this.fetchIngredients();
-  },
-  methods: {
-    fetchIngredients() {
-      // Simulate API call to retrieve ingredients from the database
-      // Replace this with your actual API call
-      setTimeout(() => {
-        // Sample data for ingredients
-        const ingredients = [
-          { id: 1, name: "Ingredient 1" },
-          { id: 2, name: "Ingredient 2" },
-          { id: 3, name: "Ingredient 3" },
-        ];
-        this.ingredients = ingredients;
-      }, 500);
-    },
-    registerRecipe() {
-      // Perform the recipe registration logic here
-      const recipe = {
-        name: this.recipeName,
-        ingredients: this.selectedIngredients,
-        instructions: this.instructions,
-      };
-      console.log("Recipe:", recipe);
+import { ref } from "vue";
+import { useMutation, useQuery } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
+import { watchEffect, computed } from "vue";
+import { ADD_RECIPE, GET_CATEGORIES } from "../constants/graphql";
 
-      // Reset the form fields
-      this.recipeName = "";
-      this.selectedIngredients = [];
-      this.instructions = "";
-    },
+export default {
+  components: {},
+  setup() {
+    const title = ref("");
+    const description = ref("");
+    const image1 = ref("");
+    const image2 = ref("");
+    const image3 = ref("");
+    const cooking_time = ref("");
+    const preparation_time = ref("");
+    const category_id = ref(null);
+    let user_id = 1;
+
+    const { result } = useQuery(GET_CATEGORIES);
+    const categories = computed(() => result.value?.category);
+
+    const categoryList = ref([]);
+
+    watchEffect(() => {
+      if (categories.value) {
+        try {
+          categoryList.value = categories.value;
+        } catch (error) {
+          console.error("Error retrieving categories:", error);
+        }
+      }
+    });
+
+    const showAlert = ref(false);
+    const router = useRouter();
+    const { mutate } = useMutation(ADD_RECIPE);
+
+    const addRecipe = async () => {
+      try {
+        const response = await mutate({
+          title: title.value,
+          category_id: category_id.value,
+          user_id: user_id,
+          description: description.value,
+          image1: image1.value,
+          image2: image2.value,
+          image3: image3.value,
+          cooking_time: cooking_time.value,
+          preparation_time: preparation_time.value,
+        });
+
+        const id = response.data.insert_recipe.returning[0].id;
+        alert("recipe added successfully!");
+        router.push("/recipedetails/" + id);
+
+        title.value = "";
+        description.value = "";
+        image1.value = "";
+        image2.value = "";
+        image3.value = "";
+        cooking_time.value = "";
+        cooking_time.value = "";
+        category_id.value = null;
+      } catch (error) {
+        console.error("Error adding recipe:", error);
+      }
+    };
+
+    return {
+      title,
+      category_id,
+      user_id,
+      description,
+      image1,
+      image2,
+      image3,
+      cooking_time,
+      preparation_time,
+      categoryList,
+      addRecipe,
+      showAlert,
+    };
   },
 };
 </script>
-
-<style scoped>
-.recipe-registration {
-  max-width: 700px;
-  margin: auto;
-}
-
-.form {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-select,
-textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.submit-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
-}
-</style>

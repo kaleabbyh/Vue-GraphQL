@@ -26,7 +26,7 @@ export default {
       try {
         const response = await mutate({ fname: fname.value });
         console.log("User inserted:", response);
-        name.value = "";
+        fname.value = "";
       } catch (error) {
         console.error("Error inserting user:", error);
       }

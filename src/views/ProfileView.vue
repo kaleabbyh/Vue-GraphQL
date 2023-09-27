@@ -68,10 +68,22 @@
         </ul>
       </div>
 
-      <div class="border-t border-gray-300 pt-6">
-        <h3 class="text-lg font-semibold mb-4 text-gray-800">Contact</h3>
-        <p class="text-gray-600">Email: {{ user.email }}</p>
-        <p class="text-gray-600">Phone: {{ user.phone }}</p>
+      <div class="flex justify-between border-t border-gray-300 pt-6">
+        <div class="flex items-end">
+          <div>
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Contact</h3>
+            <p class="text-gray-600">Email: {{ user.email }}</p>
+            <p class="text-gray-600">Phone: {{ user.phone }}</p>
+          </div>
+        </div>
+        <div class="flex items-end">
+          <router-link
+            :to="`/updateuser/${user.id}`"
+            class="bg-indigo-500 text-white py-1 px-2 rounded right-0 bottom-0 mr-4"
+          >
+            Update Profile
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -84,6 +96,7 @@ export default {
   data() {
     return {
       user: {
+        id: 1,
         name: "Kaleab Bayih",
         email: "kaleab@example.com",
         location: "Addis Ababa",

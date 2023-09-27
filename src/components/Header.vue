@@ -46,7 +46,7 @@
             </router-link>
             <router-link
               class="text-lg font-semibold text-indigo-900 hover:text-gray-600 px-3 py-2 rounded-md"
-              to="/profile"
+              to="/profile/1"
             >
               profile
             </router-link>

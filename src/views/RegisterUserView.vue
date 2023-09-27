@@ -3,6 +3,12 @@
     <div
       class="max-w-xl w-full mx-4 border bg-white border-blue-100 rounded-md shadow-md"
     >
+      <div
+        v-if="showAlert"
+        class="alert bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded"
+      >
+        <p>Registration successful!</p>
+      </div>
       <form @submit.prevent="insertUser" class="bg-white rounded p-8 my-4">
         <div class="mb-4">
           <label
@@ -93,8 +99,10 @@ export default {
     const lastname = ref("");
     const email = ref("");
     const password = ref("");
+    const showAlert = ref(false);
 
     const router = useRouter();
+
     const { mutate } = useMutation(REGISTER_USER);
 
     const insertUser = async () => {
@@ -106,8 +114,9 @@ export default {
           password: password.value,
         });
         console.log("User inserted:", response);
+        showAlert.value = true;
 
-        alert("Registration successful!");
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         router.push("/");
 
         firstname.value = "";
@@ -125,6 +134,7 @@ export default {
       email,
       password,
       insertUser,
+      showAlert,
     };
   },
 };
