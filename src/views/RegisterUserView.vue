@@ -3,7 +3,7 @@
     <div
       class="max-w-xl w-full mx-4 border bg-white border-blue-100 rounded-md shadow-md"
     >
-      <form @submit.prevent="submitForm" class="bg-white rounded p-8 my-4">
+      <form @submit.prevent="insertUser" class="bg-white rounded p-8 my-4">
         <div class="mb-4">
           <label
             for="firstname"
@@ -80,8 +80,53 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useMutation } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
+import UserList from "../components/UserList.vue";
+import { REGISTER_USER } from "../constants/graphql";
+
 export default {
-  // Component code...
+  components: { UserList },
+  setup() {
+    const firstname = ref("");
+    const lastname = ref("");
+    const email = ref("");
+    const password = ref("");
+
+    const router = useRouter();
+    const { mutate } = useMutation(REGISTER_USER);
+
+    const insertUser = async () => {
+      try {
+        const response = await mutate({
+          firstname: firstname.value,
+          lastname: lastname.value,
+          email: email.value,
+          password: password.value,
+        });
+        console.log("User inserted:", response);
+
+        alert("Registration successful!");
+        router.push("/");
+
+        firstname.value = "";
+        lastname.value = "";
+        email.value = "";
+        password.value = "";
+      } catch (error) {
+        console.error("Error inserting user:", error);
+      }
+    };
+
+    return {
+      firstname,
+      lastname,
+      email,
+      password,
+      insertUser,
+    };
+  },
 };
 </script>
 

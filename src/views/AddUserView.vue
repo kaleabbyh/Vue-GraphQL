@@ -13,18 +13,18 @@
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import UserList from "../components/UserList.vue";
-import { ADD_USER } from "../constants/graphql";
+import { REGISTER_USER } from "../constants/graphql";
 
 export default {
   components: { UserList },
   setup() {
-    const name = ref("");
+    const fname = ref("");
 
-    const { mutate } = useMutation(ADD_USER);
+    const { mutate } = useMutation(REGISTER_USER);
 
     const insertUser = async () => {
       try {
-        const response = await mutate({ name: name.value });
+        const response = await mutate({ fname: fname.value });
         console.log("User inserted:", response);
         name.value = "";
       } catch (error) {
@@ -33,7 +33,7 @@ export default {
     };
 
     return {
-      name,
+      fname,
       insertUser,
     };
   },

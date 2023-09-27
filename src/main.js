@@ -15,7 +15,7 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       "x-hasura-admin-secret":
-        "mnPUv2pIIEEoT3I6OBsIIUNLwwCRFZigB0tE8u21tRLKrGaezoIg2I3d8QSBc7vH",
+        "FV3YGvvYSM5qACsePMZBr7YMBJqehx4jzKmFqtoRRkLVtvVMGADLo315227YEXbq",
     },
   };
 });
@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 const cache = new InMemoryCache();
 
 const httpLink = createHttpLink({
-  uri: "https://kaleab.hasura.app/v1/graphql",
+  uri: "https://foodrecipe-minlab.hasura.app/v1/graphql",
 });
 
 const apolloClient = new ApolloClient({
