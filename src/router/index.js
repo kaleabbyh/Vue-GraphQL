@@ -9,6 +9,9 @@ import ContactUsView from "../views/ContactUsView.vue";
 import AddRecipeView from "../views/AddRecipeView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import UpdateUserView from "../views/UpdateUserView.vue";
+import AddIngredientView from "../views/AddIngredientView.vue";
+import addStepView from "../views/addStepView.vue";
+
 import Home from "../views/Home.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +73,16 @@ const router = createRouter({
       path: "/addrecipe",
       name: "addrecipe",
       component: AddRecipeView,
+    },
+    {
+      path: "/addingredient/:recipe_id",
+      name: "addingredient",
+      component: AddIngredientView,
+    },
+    {
+      path: "/addstep/:recipe_id",
+      name: "addstep",
+      component: addStepView,
     },
   ],
 });

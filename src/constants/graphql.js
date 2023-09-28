@@ -113,6 +113,57 @@ export const ADD_RECIPE = gql`
   }
 `;
 
+export const GET_RECIPES = gql`
+  query getRecipes {
+    recipe {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+    }
+  }
+`;
+
+export const GET_RECIPE = gql`
+  query getRecipe($id: Int) {
+    recipe(where: { id: { _eq: $id } }) {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+      ingredients {
+        amount
+        name
+        id
+        recipe_id
+      }
+
+      steps {
+        id
+        description
+        recipe_id
+        step_number
+      }
+    }
+  }
+`;
+
 export const GET_CATEGORIES = gql`
   query getCategories {
     category {
@@ -121,6 +172,44 @@ export const GET_CATEGORIES = gql`
       name
       updated_at
       created_at
+    }
+  }
+`;
+
+export const ADD_INGREDIENT = gql`
+  mutation addIngredient($name: String!, $amount: String!, $recipe_id: Int!) {
+    insert_ingredient(
+      objects: { amount: $amount, name: $name, recipe_id: $recipe_id }
+    ) {
+      returning {
+        id
+        name
+        amount
+        recipe_id
+      }
+    }
+  }
+`;
+
+export const ADD_STEP = gql`
+  mutation addStep(
+    $step_number: Int!
+    $description: String!
+    $recipe_id: Int!
+  ) {
+    insert_step(
+      objects: {
+        step_number: $step_number
+        description: $description
+        recipe_id: $recipe_id
+      }
+    ) {
+      returning {
+        id
+        description
+        step_number
+        recipe_id
+      }
     }
   }
 `;

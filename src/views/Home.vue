@@ -6,7 +6,7 @@
         class="overlay absolute inset-0 flex flex-col items-center justify-center text-white p-8"
       >
         <h1 class="text-4xl font-bold mb-4">Special Foods Recipes</h1>
-        <p class="text-3xl">Explore delicious food recipes</p>
+        <p class="text-3xl">Explore our latest food recipes</p>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-10 gap-8"
           >
             <RecipeCard
-              v-for="recipe in recipes"
+              v-for="recipe in recipeList"
               :key="recipe.id"
               :recipe="recipe"
             />
@@ -36,14 +36,31 @@
 </template>
 <script>
 import RecipeCard from "../components/RecipeCard.vue";
-import { recipes } from "../constants/recipes";
+import { watchEffect } from "vue";
+import { ref } from "vue";
+import { useQuery } from "@vue/apollo-composable";
+import { GET_RECIPES } from "../constants/graphql";
 
 export default {
   name: "HomePage",
   components: { RecipeCard },
-  data() {
+  setup() {
+    const { result } = useQuery(GET_RECIPES);
+    const recipeList = ref([]);
+
+    watchEffect(() => {
+      if (result.value) {
+        try {
+          recipeList.value = result.value?.recipe;
+          console.log(recipeList.value);
+        } catch (error) {
+          console.error("Error retrieving Recipes:", error);
+        }
+      }
+    });
+
     return {
-      recipes: recipes,
+      recipeList,
     };
   },
 };

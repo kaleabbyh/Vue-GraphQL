@@ -1,6 +1,7 @@
 <template>
-  <div class="mb-10">
+  <div class="mb-10 max-w-lg">
     <div class="relative">
+      <!-- Previous and Next icons -->
       <img
         src="@/assets/images/Previous.png"
         alt="Left Icon"
@@ -14,15 +15,17 @@
         @click="selectNextImage"
       />
 
+      <!-- Main Image -->
       <img
         :src="mainImage || placeholderImage"
         alt="Main Image"
-        class="w-full rounded-lg mb-2"
+        class="w-full max-h-96 rounded-lg mb-2"
       />
     </div>
     <div
       class="thumbnail-container h-20 w-full flex justify-between gap-2 p-1 bg-gray-200"
     >
+      <!-- Thumbnail Images -->
       <img
         v-for="(image, index) in thumbnailImages"
         :key="index"
@@ -36,36 +39,59 @@
 </template>
 
 <script>
-import PreviousIcon from "@/assets/images/Previous.png";
-import NextIcon from "@/assets/images/next.png";
+import { ref, watch } from "vue";
 import FoodImage from "@/assets/images/food.png";
-import FoodImage2 from "@/assets/images/food2.png";
 
 export default {
-  name: "ImageCard",
-  data() {
-    return {
-      mainImage: "",
-      thumbnailImages: [FoodImage, FoodImage2, FoodImage],
-      placeholderImage: FoodImage,
-      currentIndex: 0,
-    };
+  name: "Slider",
+  props: {
+    mainImage: {
+      type: String,
+      required: true,
+    },
+    thumbnailImages: {
+      type: Array,
+      required: true,
+    },
   },
-  methods: {
-    selectThumbnail(index) {
-      this.mainImage = this.thumbnailImages[index];
-      this.currentIndex = index;
-    },
-    selectPreviousImage() {
-      this.currentIndex =
-        (this.currentIndex - 1 + this.thumbnailImages.length) %
-        this.thumbnailImages.length;
-      this.mainImage = this.thumbnailImages[this.currentIndex];
-    },
-    selectNextImage() {
-      this.currentIndex = (this.currentIndex + 1) % this.thumbnailImages.length;
-      this.mainImage = this.thumbnailImages[this.currentIndex];
-    },
+  setup(props) {
+    const mainImage = ref(props.mainImage);
+    const placeholderImage = FoodImage;
+    const currentIndex = ref(0);
+
+    const selectThumbnail = (index) => {
+      currentIndex.value = index;
+      mainImage.value = props.thumbnailImages[index];
+    };
+
+    const selectPreviousImage = () => {
+      currentIndex.value =
+        (currentIndex.value - 1 + props.thumbnailImages.length) %
+        props.thumbnailImages.length;
+      mainImage.value = props.thumbnailImages[currentIndex.value];
+    };
+
+    const selectNextImage = () => {
+      currentIndex.value =
+        (currentIndex.value + 1) % props.thumbnailImages.length;
+      mainImage.value = props.thumbnailImages[currentIndex.value];
+    };
+
+    watch(
+      () => props.mainImage,
+      (newMainImage) => {
+        mainImage.value = newMainImage;
+      }
+    );
+
+    return {
+      mainImage,
+      placeholderImage,
+      currentIndex,
+      selectThumbnail,
+      selectPreviousImage,
+      selectNextImage,
+    };
   },
 };
 </script>
