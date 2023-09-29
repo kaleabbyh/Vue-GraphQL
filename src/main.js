@@ -9,6 +9,9 @@ import App from "./App.vue";
 import { setContext } from "@apollo/client/link/context";
 import router from "./router";
 import "./assets/tailwind.css";
+// import dotenv from "dotenv";
+
+// dotenv.config();
 
 const authLink = setContext((_, { headers }) => {
   return {

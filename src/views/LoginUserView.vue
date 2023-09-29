@@ -3,6 +3,12 @@
     <div
       class="max-w-xl w-full mx-4 border bg-white border-blue-100 rounded-md shadow-md"
     >
+      <div
+        v-if="showAlert"
+        class="bg-red-100 text-red-600 py-2 px-4 mb-4 text-center font-bold rounded-md"
+      >
+        Invalid credentials
+      </div>
       <form @submit.prevent="submitForm" class="bg-white rounded-md p-8 my-4">
         <div class="mb-4">
           <label for="name" class="block text-gray-700 text-sm font-bold mb-2"
@@ -49,8 +55,52 @@
 </template>
 
 <script>
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useQuery } from "@vue/apollo-composable";
+import { setToken } from "../utils/auth";
+
+import { GET_USER } from "../constants/graphql";
+
 export default {
-  // Component code...
+  name: "GET_USER",
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const isFormSubmitted = ref(false);
+    const showAlert = ref(false);
+    const router = useRouter();
+
+    const { result, refetch } = useQuery(GET_USER);
+
+    const submitForm = () => {
+      isFormSubmitted.value = true;
+    };
+
+    watch(
+      [email, password, isFormSubmitted],
+      ([newEmail, newPassword, newIsFormSubmitted]) => {
+        if (newIsFormSubmitted) {
+          refetch({ email: newEmail, password: newPassword }).then(() => {
+            if (result.value && result.value.user.length > 0) {
+              setToken(result.value.user[0].id);
+              router.push("/");
+            } else {
+              showAlert.value = true;
+            }
+            isFormSubmitted.value = false; // Reset the form submission flag
+          });
+        }
+      }
+    );
+
+    return {
+      email,
+      password,
+      submitForm,
+      showAlert,
+    };
+  },
 };
 </script>
 

@@ -15,6 +15,7 @@ export const REGISTER_USER = gql`
         password: $password
       }
     ) {
+      id
       firstname
       lastname
       email
@@ -57,6 +58,30 @@ export const getUser_Query = gql`
       firstname
       lastname
       password
+      created_at
+      updated_at
+      recipes {
+        id
+        title
+        description
+        created_at
+        cooking_time
+        category_id
+      }
+    }
+  }
+`;
+
+export const GET_USER = gql`
+  query getUser($email: String!, $password: String!) {
+    user(where: { email: { _eq: $email }, password: { _eq: $password } }) {
+      id
+      email
+      firstname
+      lastname
+      password
+      created_at
+      updated_at
     }
   }
 `;
@@ -113,6 +138,49 @@ export const ADD_RECIPE = gql`
   }
 `;
 
+export const UPDATE_RECIPE = gql`
+  mutation updateRecipe(
+    $id: Int!
+    $title: String!
+    $description: String!
+    $image1: String!
+    $image2: String!
+    $image3: String!
+    $cooking_time: Int!
+    $preparation_time: Int!
+    $category_id: Int!
+  ) {
+    update_recipe(
+      where: { id: { _eq: $id } }
+      _set: {
+        title: $title
+        description: $description
+        image1: $image1
+        image2: $image2
+        image3: $image3
+        preparation_time: $preparation_time
+        cooking_time: $cooking_time
+        category_id: $category_id
+      }
+    ) {
+      returning {
+        id
+        title
+        description
+        image1
+        image2
+        image3
+        cooking_time
+        preparation_time
+        category_id
+        user_id
+        created_at
+        updated_at
+      }
+    }
+  }
+`;
+
 export const GET_RECIPES = gql`
   query getRecipes {
     recipe {
@@ -128,6 +196,10 @@ export const GET_RECIPES = gql`
       category_id
       created_at
       updated_at
+      category {
+        name
+        id
+      }
     }
   }
 `;
@@ -159,6 +231,23 @@ export const GET_RECIPE = gql`
         description
         recipe_id
         step_number
+      }
+      category {
+        image
+        name
+        id
+      }
+    }
+  }
+`;
+
+export const SEARCH_RECIPE_BY_CATEGORY = gql`
+  query GetRecipesByCategory($category_name: String!) {
+    category(where: { name: { _ilike: $category_name } }) {
+      id
+      recipes {
+        id
+        title
       }
     }
   }

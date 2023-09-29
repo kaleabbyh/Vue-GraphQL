@@ -1,17 +1,7 @@
 <template>
-  <div class="bg-image bg-cover bg-opacity-50 bg-center bg-fixed py-0 mt-20">
-    <div>
-      <div class="w-full h-96"></div>
-      <div
-        class="overlay absolute inset-0 flex flex-col items-center justify-center text-white p-8"
-      >
-        <h1 class="text-4xl font-bold mb-4">Special Foods Recipes</h1>
-        <p class="text-3xl">Explore our latest food recipes</p>
-      </div>
-    </div>
-
-    <div class="relative" style="z-index: 1; overflow-y: scroll">
-      <div class="bg-gray-100">
+  <div class="bg-image bg-cover bg-center bg-fixed py-0 mt-20">
+    <div class="relative bg-opacity-90" style="z-index: 1; overflow-y: scroll">
+      <div class="bg-gray-100 bg-opacity-90">
         <div class="container py-8 px-6">
           <h1 class="text-3xl font-bold mb-4 flex items-center justify-center">
             Welcome to KRecipes
@@ -19,7 +9,20 @@
           <p class="text-gray-600 mb-8 flex items-center justify-center">
             Discover delicious recipes for every occasion
           </p>
-
+          <div class="flex justify-center mb-4">
+            <input
+              v-model="categorySearch"
+              type="text"
+              placeholder="Search by category"
+              class="px-4 py-2 border border-gray-300 rounded-md"
+            />
+            <button
+              @click="searchRecipes"
+              class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+            >
+              Search
+            </button>
+          </div>
           <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-10 gap-8"
           >
@@ -34,33 +37,47 @@
     </div>
   </div>
 </template>
+
 <script>
 import RecipeCard from "../components/RecipeCard.vue";
-import { watchEffect } from "vue";
+import { watchEffect, computed } from "vue";
 import { ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
-import { GET_RECIPES } from "../constants/graphql";
+import { GET_RECIPES, SEARCH_RECIPE_BY_CATEGORY } from "../constants/graphql";
 
 export default {
-  name: "HomePage",
+  name: "RECIPES",
   components: { RecipeCard },
   setup() {
-    const { result } = useQuery(GET_RECIPES);
     const recipeList = ref([]);
+    const categorySearch = ref("");
+    const { result } = useQuery(GET_RECIPES);
+    // const { result: fruitCategory } = useQuery(SEARCH_RECIPE_BY_CATEGORY, {
+    //   category_name: `%${categorySearch.value}%`,
+    // });
 
     watchEffect(() => {
       if (result.value) {
         try {
           recipeList.value = result.value?.recipe;
-          // console.log(recipeList.value);
         } catch (error) {
           console.error("Error retrieving Recipes:", error);
         }
       }
     });
 
+    const searchRecipes = () => {
+      const searchTerm = categorySearch.value?.toLowerCase();
+      const filtered = recipeList.value.filter((recipe) =>
+        recipe.category?.name?.toLowerCase().includes(searchTerm)
+      );
+      console.log(filtered);
+    };
+
     return {
       recipeList,
+      categorySearch,
+      searchRecipes,
     };
   },
 };

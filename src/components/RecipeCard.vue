@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md">
+  <div
+    class="bg-white rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
+  >
     <img
       :src="recipe.image1"
       :alt="recipe.title"
@@ -9,8 +11,8 @@
       <h2 class="text-xl font-semibold mb-2">{{ recipe.title }}</h2>
       <p class="text-gray-600 mb-4">
         {{
-          recipe.description.length > 100
-            ? recipe.description.slice(0, 100) + "..."
+          recipe.description?.length > 100
+            ? recipe.description?.slice(0, 100) + "..."
             : recipe.description
         }}
       </p>

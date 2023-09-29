@@ -39,31 +39,18 @@
       <div class="border-t border-gray-300 pt-6">
         <h3 class="text-lg font-semibold mb-4 text-gray-800">Recipes</h3>
         <ul class="list-disc list-inside text-gray-600">
-          <li class="flex justify-between">
-            <span>Recipe 1</span>
+          <li
+            v-for="recipe in recipes"
+            :key="recipe.id"
+            class="flex justify-between"
+          >
+            <span>{{ recipe.title }}</span>
             <router-link
-              to="/edit/recipe1"
-              class="bg-green-500 text-white py-1 px-2 rounded"
-              >Edit</router-link
+              :to="`/updaterecipe/${recipe.id}`"
+              class="bg-green-500 text-white py-1 px-4 my-2 rounded"
             >
-          </li>
-          <br />
-          <li class="flex justify-between">
-            <span>Recipe 2</span>
-            <router-link
-              to="/edit/recipe1"
-              class="bg-green-500 text-white py-1 px-2 rounded"
-              >Edit</router-link
-            >
-          </li>
-          <br />
-          <li class="flex justify-between">
-            <span>Recipe 3</span>
-            <router-link
-              to="/edit/recipe1"
-              class="bg-green-500 text-white py-1 px-2 rounded"
-              >Edit</router-link
-            >
+              Edit
+            </router-link>
           </li>
         </ul>
       </div>
@@ -79,7 +66,7 @@
         <div class="flex items-end">
           <router-link
             :to="`/updateuser/${user.id}`"
-            class="bg-indigo-500 text-white py-1 px-2 rounded right-0 bottom-0 mr-4"
+            class="bg-indigo-600 text-white py-1 px-2 rounded right-0 bottom-0 mr-4"
           >
             Update Profile
           </router-link>
@@ -90,29 +77,67 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import PersonImage from "@/assets/images/person.png";
+
+import { useMutation } from "@vue/apollo-composable";
+import { useRouter, useRoute } from "vue-router";
+import { useQuery } from "@vue/apollo-composable";
+import { watchEffect, computed } from "vue";
+import { UPDATE_USER, getUser_Query } from "../constants/graphql";
+
 export default {
   name: "UserProfile",
-  data() {
-    return {
-      user: {
-        id: 1,
-        name: "Kaleab Bayih",
-        email: "kaleab@example.com",
-        location: "Addis Ababa",
-        joinedDate: "2023-01-01",
-        avatar: PersonImage,
-        about:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam bibendum purus quis felis aliquet, et tristique ex bibendum. Nunc accumsan justo non turpis malesuada, vitae tristique dui venenatis. Donec nec libero magna. Nulla facilisi. Proin tristique, neque id dapibus tincidunt, lacus tortor malesuada ex, id posuere metus sem vitae massa.",
-        phone: "+251900000000",
-      },
+  setup() {
+    const user = ref({});
+    const recipes = ref([]);
+    const route = useRoute();
+    const router = useRouter();
+    const userId = route.params.id;
+
+    const { result, loading, error } = useQuery(getUser_Query);
+    const user_copy = computed(() => result.value?.user[0]);
+
+    const constants = {
+      location: "Addis Ababa",
+      about: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+      Nullam bibendum purus quis felis aliquet, et tristique ex bibendum.
+       Nunc accumsan justo non turpis malesuada, vitae tristique dui venenatis. 
+       Donec nec libero magna. Nulla facilisi. Proin tristique, neque id dapibus tincidunt, 
+       lacus tortor malesuada ex, id posuere metus sem vitae massa.`,
+      phone: "+251922555731",
     };
-  },
-  methods: {
-    formatDate(date) {
-      // Format the date as desired (e.g., using a library like moment.js)
+
+    watchEffect(() => {
+      if (user_copy.value) {
+        try {
+          user.value = {
+            id: 1,
+            name: user_copy.value.firstname + " " + user_copy.value.lastname,
+            email: user_copy.value.email,
+            joinedDate: user_copy.value.created_at.split("T")[0],
+            location: constants.location,
+            avatar: PersonImage,
+            about: constants.about,
+            phone: constants.phone,
+          };
+
+          recipes.value = user_copy.value.recipes;
+        } catch (error) {
+          console.error("Error retrieving user:", error);
+        }
+      }
+    });
+
+    function formatDate(date) {
       return date;
-    },
+    }
+
+    return {
+      user,
+      recipes,
+      formatDate,
+    };
   },
 };
 </script>

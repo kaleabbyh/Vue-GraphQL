@@ -1,8 +1,8 @@
 <template>
   <div class="recipe-registration py-20 md:py-32">
-    <h1 class="text-2xl text-center font-semibold">Add Recipe</h1>
+    <h1 class="text-2xl text-center font-semibold">Update Recipe</h1>
     <form
-      @submit.prevent="addRecipe"
+      @submit.prevent="updateRecipe"
       class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
     >
       <div class="mb-6">
@@ -111,7 +111,7 @@
         type="submit"
         class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
       >
-        Add Recipe
+        Update Recipe
       </button>
     </form>
   </div>
@@ -120,10 +120,16 @@
 <script>
 import { ref } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { watchEffect, computed } from "vue";
 import { getToken } from "../utils/auth";
-import { ADD_RECIPE, GET_CATEGORIES } from "../constants/graphql";
+import {
+  ADD_RECIPE,
+  UPDATE_RECIPE,
+  GET_RECIPE,
+  GET_CATEGORIES,
+} from "../constants/graphql";
+import { UNSAFE_useRouteId } from "react-router-dom";
 
 export default {
   components: {},
@@ -137,23 +143,34 @@ export default {
     const preparation_time = ref("");
     const category_id = ref(null);
 
-    const token = ref(null);
-    const isAuthenticated = ref(false);
-    token.value = getToken();
-    let user_id = token.value;
+    const route = useRoute();
+    const router = useRouter();
+    const recipe_id = route.params.id;
 
-    const { result } = useQuery(GET_CATEGORIES);
-    const categories = computed(() => result.value?.category);
+    const { result: allCategory } = useQuery(GET_CATEGORIES);
+    const categories = computed(() => allCategory.value?.category);
 
     const categoryList = ref([]);
 
+    const { result: myRecipe } = useQuery(GET_RECIPE, { id: recipe_id });
+    const recipe = ref();
+
     watchEffect(() => {
-      if (categories.value) {
+      if (categories.value && recipe) {
         try {
           categoryList.value = categories.value;
-          isAuthenticated.value = user_id ? true : false;
-          console.log(isAuthenticated.value);
-          console.log(user_id);
+          recipe.value = myRecipe.value?.recipe?.[0];
+
+          title.value = recipe.value.title;
+          description.value = recipe.value.description;
+          image1.value = recipe.value.image1;
+          image2.value = recipe.value.image2;
+          image3.value = recipe.value.image3;
+          cooking_time.value = recipe.value.cooking_time;
+          preparation_time.value = recipe.value.preparation_time;
+          category_id.value = null;
+
+          console.log(recipe.value);
         } catch (error) {
           console.error("Error retrieving categories:", error);
         }
@@ -161,15 +178,14 @@ export default {
     });
 
     const showAlert = ref(false);
-    const router = useRouter();
-    const { mutate } = useMutation(ADD_RECIPE);
+    const { mutate } = useMutation(UPDATE_RECIPE);
 
-    const addRecipe = async () => {
+    const updateRecipe = async () => {
       try {
         const response = await mutate({
+          id: recipe_id,
           title: title.value,
           category_id: category_id.value,
-          user_id: user_id,
           description: description.value,
           image1: image1.value,
           image2: image2.value,
@@ -178,8 +194,8 @@ export default {
           preparation_time: preparation_time.value,
         });
 
-        const id = response.data.insert_recipe.returning[0].id;
-        alert("recipe added successfully!");
+        const id = response.data.update_recipe.returning[0].id;
+        // alert("recipe added successfully!");
         router.push("/recipedetails/" + id);
 
         title.value = "";
@@ -198,7 +214,7 @@ export default {
     return {
       title,
       category_id,
-      user_id,
+      recipe_id,
       description,
       image1,
       image2,
@@ -206,9 +222,8 @@ export default {
       cooking_time,
       preparation_time,
       categoryList,
-      addRecipe,
+      updateRecipe,
       showAlert,
-      isAuthenticated,
     };
   },
 };

@@ -10,7 +10,13 @@ import AddRecipeView from "../views/AddRecipeView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import UpdateUserView from "../views/UpdateUserView.vue";
 import AddIngredientView from "../views/AddIngredientView.vue";
-import addStepView from "../views/addStepView.vue";
+import AddStepView from "../views/AddStepView.vue";
+import RecipesView from "../views/RecipesView.vue";
+import UpdateRecipeView from "../views/UpdateRecipeView.vue";
+
+import ImageView from "../views/ImageView.vue";
+
+import { isAuthenticated } from "../utils/auth";
 
 import Home from "../views/Home.vue";
 const router = createRouter({
@@ -73,6 +79,18 @@ const router = createRouter({
       path: "/addrecipe",
       name: "addrecipe",
       component: AddRecipeView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
+    {
+      path: "/updaterecipe/:id",
+      name: "updaterecipe",
+      component: UpdateRecipeView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/addingredient/:recipe_id",
@@ -82,18 +100,24 @@ const router = createRouter({
     {
       path: "/addstep/:recipe_id",
       name: "addstep",
-      component: addStepView,
+      component: AddStepView,
+    },
+    {
+      path: "/recipes",
+      name: "recipes",
+      component: RecipesView,
+    },
+    {
+      path: "/image",
+      name: "image",
+      component: ImageView,
     },
   ],
 });
 
-function isLoggedIn() {
-  return localStorage.getItem("token") !== null;
-}
-
 router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (isLoggedIn()) {
+    if (isAuthenticated()) {
       next();
     } else {
       next("/login");

@@ -5,7 +5,7 @@
     >
       <div
         v-if="showAlert"
-        class="alert bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded"
+        class="alert bg-green-100 border border-green-200 text-green-600 px-4 py-2 text-center rounded"
       >
         <p>Registration successful!</p>
       </div>
@@ -91,6 +91,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
 import UserList from "../components/UserList.vue";
 import { REGISTER_USER } from "../constants/graphql";
+import { setToken } from "../utils/auth";
 
 export default {
   components: { UserList },
@@ -100,7 +101,6 @@ export default {
     const email = ref("");
     const password = ref("");
     const showAlert = ref(false);
-
     const router = useRouter();
 
     const { mutate } = useMutation(REGISTER_USER);
@@ -113,9 +113,11 @@ export default {
           email: email.value,
           password: password.value,
         });
-        console.log("User inserted:", response);
-        showAlert.value = true;
 
+        if (response.data) {
+          setToken(response.data?.insert_user_one?.id);
+        }
+        showAlert.value = true;
         await new Promise((resolve) => setTimeout(resolve, 2000));
         router.push("/");
 
