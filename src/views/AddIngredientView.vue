@@ -41,49 +41,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
 import { ADD_INGREDIENT } from "../constants/graphql";
 
-export default {
-  components: {},
-  setup() {
-    const name = ref("");
-    const amount = ref("");
+const name = ref("");
+const amount = ref("");
 
-    const router = useRouter();
-    const route = useRoute();
-    const recipe_id = route.params.recipe_id;
+const router = useRouter();
+const route = useRoute();
+const recipe_id = route.params.recipe_id;
 
-    const { mutate } = useMutation(ADD_INGREDIENT);
+const { mutate } = useMutation(ADD_INGREDIENT);
 
-    const addIngredient = async () => {
-      try {
-        const response = await mutate({
-          name: name.value,
-          amount: amount.value,
-          recipe_id: recipe_id,
-        });
+const addIngredient = async () => {
+  try {
+    const response = await mutate({
+      name: name.value,
+      amount: amount.value,
+      recipe_id: recipe_id,
+    });
 
-        console.log(response.data);
-        alert("ingredient added successfully!");
-        router.push("/recipedetails/" + recipe_id);
+    console.log(response.data);
+    router.push("/recipedetails/" + recipe_id);
 
-        name.value = "";
-        amount.value = "";
-      } catch (error) {
-        console.error("Error adding ingredients:", error);
-      }
-    };
-
-    return {
-      name,
-      amount,
-      addIngredient,
-    };
-  },
+    name.value = "";
+    amount.value = "";
+  } catch (error) {
+    console.error("Error adding ingredients:", error);
+  }
 };
 </script>
 

@@ -102,23 +102,8 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "ContactUs",
-  data() {
-    return {
-      name: "",
-      email: "",
-      message: "",
-    };
-  },
-  methods: {
-    submitForm() {
-      // Handle form submission logic here
-    },
-  },
-};
-</script>
+
+<script setup></script>
 
 <style>
 .bg-contact-image {

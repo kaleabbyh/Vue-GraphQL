@@ -37,37 +37,33 @@
     </div>
   </div>
 </template>
-<script>
-import Slider from "../components/Slider.vue";
 
-export default {
-  components: {
-    Slider,
-  },
-  data() {
-    return {
-      recipe: {
-        title: "Delicious Recipe",
-        image:
-          "https://th.bing.com/th/id/OIP.8_GJE3mBavuXiGblgMcNvgHaLH?pid=ImgDet&rs=1",
-        description:
-          "This is a mouthwatering recipe that will delight your taste buds.",
-        ingredients: [
-          "Ingredient 1",
-          "Ingredient 2",
-          "Ingredient 3",
-          "Ingredient 4",
-          "Ingredient 5",
-        ],
-        instructions: [
-          "Step 1: Do this",
-          "Step 2: Do that",
-          "Step 3: Add the ingredients",
-          "Step 4: Cook for 30 minutes",
-          "Step 5: Enjoy your delicious meal!",
-        ],
-      },
-    };
-  },
+<script setup>
+import Slider from "@/components/Slider.vue";
+
+const recipe = {
+  title: "Delicious Recipe",
+  image:
+    "https://th.bing.com/th/id/OIP.8_GJE3mBavuXiGblgMcNvgHaLH?pid=ImgDet&rs=1",
+  description:
+    "This is a mouthwatering recipe that will delight your taste buds.",
+  ingredients: [
+    "Ingredient 1",
+    "Ingredient 2",
+    "Ingredient 3",
+    "Ingredient 4",
+    "Ingredient 5",
+  ],
+  instructions: [
+    "Step 1: Do this",
+    "Step 2: Do that",
+    "Step 3: Add the ingredients",
+    "Step 4: Cook for 30 minutes",
+    "Step 5: Enjoy your delicious meal!",
+  ],
+};
+
+const components = {
+  Slider,
 };
 </script>

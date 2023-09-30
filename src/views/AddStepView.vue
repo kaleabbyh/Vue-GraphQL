@@ -41,48 +41,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
-import { useMutation, useQuery } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
 import { ADD_STEP } from "../constants/graphql";
 
-export default {
-  components: {},
-  setup() {
-    const step_number = ref(null);
-    const description = ref("");
+const step_number = ref(null);
+const description = ref("");
 
-    const router = useRouter();
-    const route = useRoute();
-    const recipe_id = route.params.recipe_id;
+const router = useRouter();
+const route = useRoute();
+const recipe_id = route.params.recipe_id;
 
-    const { mutate } = useMutation(ADD_STEP);
+const { mutate } = useMutation(ADD_STEP);
 
-    const addStep = async () => {
-      try {
-        const response = await mutate({
-          step_number: step_number.value,
-          description: description.value,
-          recipe_id: recipe_id,
-        });
+const addStep = async () => {
+  try {
+    const response = await mutate({
+      step_number: step_number.value,
+      description: description.value,
+      recipe_id: recipe_id,
+    });
 
-        console.log(response.data);
-        alert("Step added successfully!");
-        router.push("/recipedetails/" + recipe_id);
+    console.log(response.data);
+    alert("Step added successfully!");
+    router.push("/recipedetails/" + recipe_id);
 
-        step_number.value = "";
-        description.value = "";
-      } catch (error) {
-        console.error("Error adding step:", error);
-      }
-    };
-
-    return {
-      step_number,
-      description,
-      addStep,
-    };
-  },
+    step_number.value = null;
+    description.value = "";
+  } catch (error) {
+    console.error("Error adding step:", error);
+  }
 };
 </script>

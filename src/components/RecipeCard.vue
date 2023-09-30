@@ -9,42 +9,28 @@
     />
     <div class="p-4">
       <h2 class="text-xl font-semibold mb-2">{{ recipe.title }}</h2>
-      <p class="text-gray-600 mb-4">
+      <p class="text-gray-600 mb-1">
         {{
           recipe.description?.length > 100
             ? recipe.description?.slice(0, 100) + "..."
             : recipe.description
         }}
       </p>
-      <div class="flex items-center justify-between mb-4">
-        <button class="text-blue-500 hover:underline" @click="toggleBookmark">
-          {{ isBookmarked ? "Unbookmark" : "Bookmark" }}
-        </button>
-        <div>
-          <select class="mr-2" v-model="selectedRating" @change="rateRecipe">
-            <option value="" disabled>Select Rating</option>
-            <option v-for="rating in ratings" :key="rating" :value="rating">
-              {{ rating }}
-            </option>
-          </select>
-          <button
-            class="text-blue-500 hover:underline"
-            @click="openCommentModal"
-          >
-            Comment
-          </button>
-        </div>
+      <div class="flex items-center justify-between">
+        <router-link
+          :to="`/recipedetails/${recipe.id}`"
+          class="text-blue-500 hover:underline"
+          >Read More</router-link
+        >
+        <span>4.2 rates</span>
       </div>
-      <router-link
-        :to="`/recipedetails/${recipe.id}`"
-        class="text-blue-500 hover:underline"
-        >Read More</router-link
-      >
+      <StarRating :initialRating="1" :totalStars="5" />
     </div>
   </div>
 </template>
 
 <script setup>
+import StarRating from "./Rating.vue";
 const { recipe } = defineProps(["recipe"]);
 </script>
 

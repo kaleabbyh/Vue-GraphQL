@@ -113,7 +113,8 @@
     </div>
   </div>
 </template>
-<script>
+
+<script setup>
 import Slider from "../components/slider.vue";
 import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
@@ -121,39 +122,29 @@ import { GET_RECIPE } from "../constants/graphql";
 import { getToken } from "../utils/auth";
 import { ref, watchEffect } from "vue";
 
-export default {
-  components: { Slider },
-  setup() {
-    const route = useRoute();
-    const token = ref(null);
-    const isAuthorized = ref(false);
-    token.value = getToken();
-    const recipeId = route.params.id;
+const route = useRoute();
+const token = ref(null);
+const isAuthorized = ref(false);
+token.value = getToken();
+const recipeId = route.params.id;
 
-    const { result } = useQuery(GET_RECIPE, { id: recipeId });
-    const recipe = ref();
+const { result } = useQuery(GET_RECIPE, { id: recipeId });
+const recipe = ref();
 
-    watchEffect(() => {
-      if (result.value) {
-        try {
-          recipe.value = result.value?.recipe?.[0];
-          isAuthorized.value =
-            String(recipe.value.user_id) === String(token.value);
-          console.log(isAuthorized.value);
-          console.log(recipe.value.category_id);
-        } catch (error) {
-          console.error("Error retrieving Recipes:", error);
-        }
-      }
-    });
-
-    return {
-      isAuthorized,
-      recipe,
-    };
-  },
-};
+watchEffect(() => {
+  if (result.value) {
+    try {
+      recipe.value = result.value?.recipe?.[0];
+      isAuthorized.value = String(recipe.value.user_id) === String(token.value);
+      console.log(isAuthorized.value);
+      console.log(recipe.value.category_id);
+    } catch (error) {
+      console.error("Error retrieving Recipes:", error);
+    }
+  }
+});
 </script>
+
 <style>
 img {
   max-width: 100%;

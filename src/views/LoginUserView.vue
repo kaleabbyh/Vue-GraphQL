@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
@@ -62,46 +62,34 @@ import { setToken } from "../utils/auth";
 
 import { GET_USER } from "../constants/graphql";
 
-export default {
-  name: "GET_USER",
-  setup() {
-    const email = ref("");
-    const password = ref("");
-    const isFormSubmitted = ref(false);
-    const showAlert = ref(false);
-    const router = useRouter();
+const email = ref("");
+const password = ref("");
+const isFormSubmitted = ref(false);
+const showAlert = ref(false);
+const router = useRouter();
 
-    const { result, refetch } = useQuery(GET_USER);
+const { result, refetch } = useQuery(GET_USER);
 
-    const submitForm = () => {
-      isFormSubmitted.value = true;
-    };
-
-    watch(
-      [email, password, isFormSubmitted],
-      ([newEmail, newPassword, newIsFormSubmitted]) => {
-        if (newIsFormSubmitted) {
-          refetch({ email: newEmail, password: newPassword }).then(() => {
-            if (result.value && result.value.user.length > 0) {
-              setToken(result.value.user[0].id);
-              router.push("/");
-            } else {
-              showAlert.value = true;
-            }
-            isFormSubmitted.value = false; // Reset the form submission flag
-          });
-        }
-      }
-    );
-
-    return {
-      email,
-      password,
-      submitForm,
-      showAlert,
-    };
-  },
+const submitForm = () => {
+  isFormSubmitted.value = true;
 };
+
+watch(
+  [email, password, isFormSubmitted],
+  ([newEmail, newPassword, newIsFormSubmitted]) => {
+    if (newIsFormSubmitted) {
+      refetch({ email: newEmail, password: newPassword }).then(() => {
+        if (result.value && result.value.user.length > 0) {
+          setToken(result.value.user[0].id);
+          router.push("/");
+        } else {
+          showAlert.value = true;
+        }
+        isFormSubmitted.value = false; // Reset the form submission flag
+      });
+    }
+  }
+);
 </script>
 
 <style scoped>

@@ -177,47 +177,32 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { getToken, removeToken } from "../utils/auth";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "Navbar",
-  setup() {
-    const showMobileMenu = ref(false);
-    const showDropdown = ref(false);
-    const isLoggedIn = ref(false);
-    const token = ref(null);
-    const router = useRouter();
+const showMobileMenu = ref(false);
+const showDropdown = ref(false);
+const isLoggedIn = ref(false);
+const token = ref(null);
+const router = useRouter();
 
-    token.value = getToken();
-    isLoggedIn.value = getToken() ? true : false;
+token.value = getToken();
+isLoggedIn.value = getToken() ? true : false;
 
-    const logout = () => {
-      removeToken();
-      router.push("/");
-      window.location.reload();
-    };
+const logout = () => {
+  removeToken();
+  router.push("/");
+  window.location.reload();
+};
 
-    const toggleMobileMenu = () => {
-      showMobileMenu.value = !showMobileMenu.value;
-    };
+const toggleMobileMenu = () => {
+  showMobileMenu.value = !showMobileMenu.value;
+};
 
-    const toggleDropdown = () => {
-      showDropdown.value = !showDropdown.value;
-    };
-
-    return {
-      showMobileMenu,
-      showDropdown,
-      isLoggedIn,
-      token,
-      toggleMobileMenu,
-      toggleDropdown,
-      logout,
-    };
-  },
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
 };
 </script>
 

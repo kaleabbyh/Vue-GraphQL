@@ -76,68 +76,54 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, computed, watchEffect } from "vue";
 import PersonImage from "@/assets/images/person.png";
-
-import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
-import { watchEffect, computed } from "vue";
-import { UPDATE_USER, getUser_Query } from "../constants/graphql";
+import { getUser_Query } from "../constants/graphql";
 
-export default {
-  name: "UserProfile",
-  setup() {
-    const user = ref({});
-    const recipes = ref([]);
-    const route = useRoute();
-    const router = useRouter();
-    const userId = route.params.id;
+const user = ref({});
+const recipes = ref([]);
+const route = useRoute();
+const router = useRouter();
+const userId = route.params.id;
 
-    const { result, loading, error } = useQuery(getUser_Query);
-    const user_copy = computed(() => result.value?.user[0]);
-
-    const constants = {
-      location: "Addis Ababa",
-      about: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-      Nullam bibendum purus quis felis aliquet, et tristique ex bibendum.
-       Nunc accumsan justo non turpis malesuada, vitae tristique dui venenatis. 
-       Donec nec libero magna. Nulla facilisi. Proin tristique, neque id dapibus tincidunt, 
-       lacus tortor malesuada ex, id posuere metus sem vitae massa.`,
-      phone: "+251922555731",
-    };
-
-    watchEffect(() => {
-      if (user_copy.value) {
-        try {
-          user.value = {
-            id: 1,
-            name: user_copy.value.firstname + " " + user_copy.value.lastname,
-            email: user_copy.value.email,
-            joinedDate: user_copy.value.created_at.split("T")[0],
-            location: constants.location,
-            avatar: PersonImage,
-            about: constants.about,
-            phone: constants.phone,
-          };
-
-          recipes.value = user_copy.value.recipes;
-        } catch (error) {
-          console.error("Error retrieving user:", error);
-        }
-      }
-    });
-
-    function formatDate(date) {
-      return date;
-    }
-
-    return {
-      user,
-      recipes,
-      formatDate,
-    };
-  },
+const { result, loading, error } = useQuery(getUser_Query, { id: userId });
+const user_copy = computed(() => result.value?.user[0]);
+console.log(result.value);
+const constants = {
+  location: "Addis Ababa",
+  about: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+  Nullam bibendum purus quis felis aliquet, et tristique ex bibendum.
+   Nunc accumsan justo non turpis malesuada, vitae tristique dui venenatis. 
+   Donec nec libero magna. Nulla facilisi. Proin tristique, neque id dapibus tincidunt, 
+   lacus tortor malesuada ex, id posuere metus sem vitae massa.`,
+  phone: "+251922555731",
 };
+
+watchEffect(() => {
+  if (user_copy.value) {
+    try {
+      user.value = {
+        id: userId,
+        name: user_copy.value.firstname + " " + user_copy.value.lastname,
+        email: user_copy.value.email,
+        joinedDate: user_copy.value.created_at.split("T")[0],
+        location: constants.location,
+        avatar: PersonImage,
+        about: constants.about,
+        phone: constants.phone,
+      };
+
+      recipes.value = user_copy.value.recipes;
+    } catch (error) {
+      console.error("Error retrieving user:", error);
+    }
+  }
+});
+
+function formatDate(date) {
+  return date;
+}
 </script>

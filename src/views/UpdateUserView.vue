@@ -101,7 +101,7 @@ export default {
 
     const { mutate } = useMutation(UPDATE_USER);
 
-    const { result, loading, error } = useQuery(getUser_Query);
+    const { result, loading, error } = useQuery(getUser_Query, { id: userId });
     const user = computed(() => result.value?.user[0]);
     watchEffect(() => {
       if (user.value) {

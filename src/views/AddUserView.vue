@@ -9,33 +9,23 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import UserList from "../components/UserList.vue";
 import { REGISTER_USER } from "../constants/graphql";
 
-export default {
-  components: { UserList },
-  setup() {
-    const fname = ref("");
+const fname = ref("");
 
-    const { mutate } = useMutation(REGISTER_USER);
+const { mutate } = useMutation(REGISTER_USER);
 
-    const insertUser = async () => {
-      try {
-        const response = await mutate({ fname: fname.value });
-        console.log("User inserted:", response);
-        fname.value = "";
-      } catch (error) {
-        console.error("Error inserting user:", error);
-      }
-    };
-
-    return {
-      fname,
-      insertUser,
-    };
-  },
+const insertUser = async () => {
+  try {
+    const response = await mutate({ fname: fname.value });
+    console.log("User inserted:", response);
+    fname.value = "";
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  }
 };
 </script>

@@ -34,36 +34,25 @@
     </div>
   </div>
 </template>
-<script>
+
+<script setup>
 import RecipeCard from "../components/RecipeCard.vue";
-import { watchEffect } from "vue";
-import { ref } from "vue";
+import { watchEffect, ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GET_RECIPES } from "../constants/graphql";
 
-export default {
-  name: "HomePage",
-  components: { RecipeCard },
-  setup() {
-    const { result } = useQuery(GET_RECIPES);
-    const recipeList = ref([]);
+const { result } = useQuery(GET_RECIPES);
+const recipeList = ref([]);
 
-    watchEffect(() => {
-      if (result.value) {
-        try {
-          recipeList.value = result.value?.recipe;
-          // console.log(recipeList.value);
-        } catch (error) {
-          console.error("Error retrieving Recipes:", error);
-        }
-      }
-    });
-
-    return {
-      recipeList,
-    };
-  },
-};
+watchEffect(() => {
+  if (result.value) {
+    try {
+      recipeList.value = result.value?.recipe;
+    } catch (error) {
+      console.error("Error retrieving Recipes:", error);
+    }
+  }
+});
 </script>
 
 <style scoped>

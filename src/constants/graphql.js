@@ -52,8 +52,9 @@ export const UPDATE_USER = gql`
 `;
 
 export const getUser_Query = gql`
-  query getUser {
-    user(where: { id: { _eq: 1 } }) {
+  query getUser($id: Int!) {
+    user(where: { id: { _eq: $id } }) {
+      id
       email
       firstname
       lastname

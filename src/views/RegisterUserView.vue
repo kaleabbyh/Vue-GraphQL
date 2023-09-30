@@ -85,7 +85,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
@@ -93,52 +93,38 @@ import UserList from "../components/UserList.vue";
 import { REGISTER_USER } from "../constants/graphql";
 import { setToken } from "../utils/auth";
 
-export default {
-  components: { UserList },
-  setup() {
-    const firstname = ref("");
-    const lastname = ref("");
-    const email = ref("");
-    const password = ref("");
-    const showAlert = ref(false);
-    const router = useRouter();
+const firstname = ref("");
+const lastname = ref("");
+const email = ref("");
+const password = ref("");
+const showAlert = ref(false);
+const router = useRouter();
 
-    const { mutate } = useMutation(REGISTER_USER);
+const { mutate } = useMutation(REGISTER_USER);
 
-    const insertUser = async () => {
-      try {
-        const response = await mutate({
-          firstname: firstname.value,
-          lastname: lastname.value,
-          email: email.value,
-          password: password.value,
-        });
+const insertUser = async () => {
+  try {
+    const response = await mutate({
+      firstname: firstname.value,
+      lastname: lastname.value,
+      email: email.value,
+      password: password.value,
+    });
 
-        if (response.data) {
-          setToken(response.data?.insert_user_one?.id);
-        }
-        showAlert.value = true;
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        router.push("/");
+    if (response.data) {
+      setToken(response.data?.insert_user_one?.id);
+    }
+    showAlert.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    router.push("/");
 
-        firstname.value = "";
-        lastname.value = "";
-        email.value = "";
-        password.value = "";
-      } catch (error) {
-        console.error("Error inserting user:", error);
-      }
-    };
-
-    return {
-      firstname,
-      lastname,
-      email,
-      password,
-      insertUser,
-      showAlert,
-    };
-  },
+    firstname.value = "";
+    lastname.value = "";
+    email.value = "";
+    password.value = "";
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  }
 };
 </script>
 

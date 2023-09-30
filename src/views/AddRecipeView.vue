@@ -116,100 +116,77 @@
     </form>
   </div>
 </template>
-
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, computed, watchEffect } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
-import { watchEffect, computed } from "vue";
 import { getToken } from "../utils/auth";
 import { ADD_RECIPE, GET_CATEGORIES } from "../constants/graphql";
 
-export default {
-  components: {},
-  setup() {
-    const title = ref("");
-    const description = ref("");
-    const image1 = ref("");
-    const image2 = ref("");
-    const image3 = ref("");
-    const cooking_time = ref("");
-    const preparation_time = ref("");
-    const category_id = ref(null);
+const title = ref("");
+const description = ref("");
+const image1 = ref("");
+const image2 = ref("");
+const image3 = ref("");
+const cooking_time = ref("");
+const preparation_time = ref("");
+const category_id = ref(null);
 
-    const token = ref(null);
-    const isAuthenticated = ref(false);
-    token.value = getToken();
-    let user_id = token.value;
+const token = ref(null);
+const isAuthenticated = ref(false);
+token.value = getToken();
+let user_id = token.value;
 
-    const { result } = useQuery(GET_CATEGORIES);
-    const categories = computed(() => result.value?.category);
+const { result } = useQuery(GET_CATEGORIES);
+const categories = computed(() => result.value?.category);
 
-    const categoryList = ref([]);
+const categoryList = ref([]);
 
-    watchEffect(() => {
-      if (categories.value) {
-        try {
-          categoryList.value = categories.value;
-          isAuthenticated.value = user_id ? true : false;
-          console.log(isAuthenticated.value);
-          console.log(user_id);
-        } catch (error) {
-          console.error("Error retrieving categories:", error);
-        }
-      }
+watchEffect(() => {
+  if (categories.value) {
+    try {
+      categoryList.value = categories.value;
+      isAuthenticated.value = user_id ? true : false;
+      console.log(isAuthenticated.value);
+      console.log(user_id);
+    } catch (error) {
+      console.error("Error retrieving categories:", error);
+    }
+  }
+});
+
+const showAlert = ref(false);
+const router = useRouter();
+const { mutate } = useMutation(ADD_RECIPE);
+
+const addRecipe = async () => {
+  try {
+    const response = await mutate({
+      title: title.value,
+      category_id: category_id.value,
+      user_id: user_id,
+      description: description.value,
+      image1: image1.value,
+      image2: image2.value,
+      image3: image3.value,
+      cooking_time: cooking_time.value,
+      preparation_time: preparation_time.value,
     });
 
-    const showAlert = ref(false);
-    const router = useRouter();
-    const { mutate } = useMutation(ADD_RECIPE);
+    const id = response.data.insert_recipe.returning[0].id;
+    alert("recipe added successfully!");
+    router.push("/recipedetails/" + id);
 
-    const addRecipe = async () => {
-      try {
-        const response = await mutate({
-          title: title.value,
-          category_id: category_id.value,
-          user_id: user_id,
-          description: description.value,
-          image1: image1.value,
-          image2: image2.value,
-          image3: image3.value,
-          cooking_time: cooking_time.value,
-          preparation_time: preparation_time.value,
-        });
-
-        const id = response.data.insert_recipe.returning[0].id;
-        alert("recipe added successfully!");
-        router.push("/recipedetails/" + id);
-
-        title.value = "";
-        description.value = "";
-        image1.value = "";
-        image2.value = "";
-        image3.value = "";
-        cooking_time.value = "";
-        cooking_time.value = "";
-        category_id.value = null;
-      } catch (error) {
-        console.error("Error adding recipe:", error);
-      }
-    };
-
-    return {
-      title,
-      category_id,
-      user_id,
-      description,
-      image1,
-      image2,
-      image3,
-      cooking_time,
-      preparation_time,
-      categoryList,
-      addRecipe,
-      showAlert,
-      isAuthenticated,
-    };
-  },
+    title.value = "";
+    description.value = "";
+    image1.value = "";
+    image2.value = "";
+    image3.value = "";
+    cooking_time.value = "";
+    cooking_time.value = "";
+    category_id.value = null;
+  } catch (error) {
+    console.error("Error adding recipe:", error);
+  }
 };
 </script>

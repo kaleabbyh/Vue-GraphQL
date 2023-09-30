@@ -81,11 +81,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {},
-};
-</script>
+<script setup></script>
 
 <style scoped>
 .bg-image {

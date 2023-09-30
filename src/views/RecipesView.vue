@@ -1,8 +1,8 @@
 <template>
   <div class="bg-image bg-cover bg-center bg-fixed py-0 mt-20">
     <div class="relative bg-opacity-90" style="z-index: 1; overflow-y: scroll">
-      <div class="bg-gray-100 bg-opacity-90 min-h-vh">
-        <div class="container py-8 px-6">
+      <div class="bg-gray-100 bg-opacity-90 min-h-screen">
+        <div class="container py-8 px-2">
           <h1 class="text-3xl font-bold mb-4 flex items-center justify-center">
             Welcome to KRecipes
           </h1>
@@ -85,7 +85,7 @@
           </div>
 
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-10 gap-8"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-5 gap-5"
           >
             <RecipeCard
               v-for="recipe in recipeList"
@@ -99,121 +99,99 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RecipeCard from "@/components/RecipeCard.vue";
-import { watchEffect, watch } from "vue";
-import { ref } from "vue";
+import { watchEffect, watch, ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GET_RECIPES } from "../constants/graphql";
 
-export default {
-  name: "RECIPES",
-  components: { RecipeCard },
-  setup() {
-    const selectedOption = ref("");
-    const recipeList = ref([]);
-    const categorySearch = ref("");
-    const titleSearch = ref("");
-    const preparationTimeSearch = ref(null);
-    const ingredientSearch = ref("");
-    const { result } = useQuery(GET_RECIPES);
+const selectedOption = ref("");
+const recipeList = ref([]);
+const categorySearch = ref("");
+const titleSearch = ref("");
+const preparationTimeSearch = ref(null);
+const ingredientSearch = ref("");
+const { result } = useQuery(GET_RECIPES);
 
-    //get
+//get
 
-    watchEffect(() => {
-      if (result.value) {
-        try {
-          recipeList.value = result.value?.recipe;
-        } catch (error) {
-          console.error("Error retrieving Recipes:", error);
-        }
-      }
-    });
+watchEffect(() => {
+  if (result.value) {
+    try {
+      recipeList.value = result.value?.recipe;
+    } catch (error) {
+      console.error("Error retrieving Recipes:", error);
+    }
+  }
+});
 
-    //watcher functions
-    watch([titleSearch], (newVal) => {
-      if (!newVal) {
-        recipeList.value = result.value?.recipe || [];
-      } else {
-        searchRecipesByTitle();
-      }
-    });
+//watcher functions
+watch([titleSearch], (newVal) => {
+  if (!newVal) {
+    recipeList.value = result.value?.recipe || [];
+  } else {
+    searchRecipesByTitle();
+  }
+});
 
-    watch([preparationTimeSearch], (newVal) => {
-      if (!newVal) {
-        recipeList.value = result.value?.recipe || [];
-      } else {
-        searchRecipesByPreparationTime();
-      }
-    });
+watch([preparationTimeSearch], (newVal) => {
+  if (!newVal) {
+    recipeList.value = result.value?.recipe || [];
+  } else {
+    searchRecipesByPreparationTime();
+  }
+});
 
-    watch([categorySearch], (newVal) => {
-      if (!newVal) {
-        recipeList.value = result.value?.recipe || [];
-      } else {
-        searchRecipesByCategory();
-      }
-    });
+watch([categorySearch], (newVal) => {
+  if (!newVal) {
+    recipeList.value = result.value?.recipe || [];
+  } else {
+    searchRecipesByCategory();
+  }
+});
 
-    watch([ingredientSearch], (newVal) => {
-      if (!newVal) {
-        recipeList.value = result.value?.recipe || [];
-      } else {
-        searchRecipesByIngredient();
-      }
-    });
+watch([ingredientSearch], (newVal) => {
+  if (!newVal) {
+    recipeList.value = result.value?.recipe || [];
+  } else {
+    searchRecipesByIngredient();
+  }
+});
 
-    const searchRecipesByCategory = () => {
-      const searchItem = categorySearch.value?.toLowerCase();
-      const filtered = result.value?.recipe.filter((recipe) =>
-        recipe.category?.name?.toLowerCase().includes(searchItem)
-      );
-      recipeList.value = filtered || [];
-    };
+const searchRecipesByCategory = () => {
+  const searchItem = categorySearch.value?.toLowerCase();
+  const filtered = result.value?.recipe.filter((recipe) =>
+    recipe.category?.name?.toLowerCase().includes(searchItem)
+  );
+  recipeList.value = filtered || [];
+};
 
-    const searchRecipesByTitle = () => {
-      const searchItem = titleSearch.value?.toLowerCase();
-      const filtered = result.value?.recipe.filter((recipe) =>
-        recipe.title?.toLowerCase().includes(searchItem)
-      );
-      recipeList.value = filtered || [];
-    };
+const searchRecipesByTitle = () => {
+  const searchItem = titleSearch.value?.toLowerCase();
+  const filtered = result.value?.recipe.filter((recipe) =>
+    recipe.title?.toLowerCase().includes(searchItem)
+  );
+  recipeList.value = filtered || [];
+};
 
-    const searchRecipesByPreparationTime = () => {
-      const searchItem = preparationTimeSearch?.value;
-      const filtered = result.value?.recipe.filter(
-        (recipe) => Number(recipe?.preparation_time) <= Number(searchItem)
-      );
+const searchRecipesByPreparationTime = () => {
+  const searchItem = preparationTimeSearch?.value;
+  const filtered = result.value?.recipe.filter(
+    (recipe) => Number(recipe?.preparation_time) <= Number(searchItem)
+  );
 
-      recipeList.value = filtered || [];
-    };
+  recipeList.value = filtered || [];
+};
 
-    const searchRecipesByIngredient = () => {
-      const searchItem = ingredientSearch.value?.toLowerCase();
-      const filtered = result.value?.recipe.filter((recipe) =>
-        recipe.ingredients.some((ingredient) =>
-          ingredient.name.toLowerCase().includes(searchItem)
-        )
-      );
-      console.log(searchItem);
-      recipeList.value = filtered || [];
-    };
-
-    return {
-      recipeList,
-      selectedOption,
-
-      categorySearch,
-      titleSearch,
-      preparationTimeSearch,
-      ingredientSearch,
-
-      searchRecipesByCategory,
-      searchRecipesByTitle,
-      searchRecipesByPreparationTime,
-      searchRecipesByIngredient,
-    };
-  },
+const searchRecipesByIngredient = () => {
+  const searchItem = ingredientSearch.value?.toLowerCase();
+  const filtered = result.value?.recipe.filter((recipe) =>
+    recipe.ingredients.some((ingredient) =>
+      ingredient.name.toLowerCase().includes(searchItem)
+    )
+  );
+  console.log(searchItem);
+  recipeList.value = filtered || [];
 };
 </script>
 
