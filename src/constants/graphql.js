@@ -200,6 +200,11 @@ export const GET_RECIPES = gql`
         name
         id
       }
+      ingredients {
+        id
+        name
+        amount
+      }
     }
   }
 `;

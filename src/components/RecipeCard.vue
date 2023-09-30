@@ -16,6 +16,25 @@
             : recipe.description
         }}
       </p>
+      <div class="flex items-center justify-between mb-4">
+        <button class="text-blue-500 hover:underline" @click="toggleBookmark">
+          {{ isBookmarked ? "Unbookmark" : "Bookmark" }}
+        </button>
+        <div>
+          <select class="mr-2" v-model="selectedRating" @change="rateRecipe">
+            <option value="" disabled>Select Rating</option>
+            <option v-for="rating in ratings" :key="rating" :value="rating">
+              {{ rating }}
+            </option>
+          </select>
+          <button
+            class="text-blue-500 hover:underline"
+            @click="openCommentModal"
+          >
+            Comment
+          </button>
+        </div>
+      </div>
       <router-link
         :to="`/recipedetails/${recipe.id}`"
         class="text-blue-500 hover:underline"
