@@ -50,35 +50,31 @@
       </div>
 
       <div class="mb-6">
-        <label for="image1" class="block font-medium mb-1">Image 1:</label>
-        <input
-          v-model="image1"
-          type="text"
-          id="image1"
-          required
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
-        />
+        <label for="image1" class="block font-medium mb-1">Image One:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage1"
+          />
+        </div>
       </div>
       <div class="mb-6">
-        <label for="image2" class="block font-medium mb-1">Image 2:</label>
-        <input
-          v-model="image2"
-          type="text"
-          id="image2"
-          required
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
-        />
+        <label for="image1" class="block font-medium mb-1">Image Two:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage2"
+          />
+        </div>
       </div>
-
       <div class="mb-6">
-        <label for="image3" class="block font-medium mb-1">Image 3:</label>
-        <input
-          v-model="image3"
-          type="text"
-          id="image3"
-          required
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
-        />
+        <label for="image1" class="block font-medium mb-1">Image Three:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage3"
+          />
+        </div>
       </div>
 
       <div class="mb-6">
@@ -116,12 +112,14 @@
     </form>
   </div>
 </template>
+
 <script setup>
 import { ref, computed, watchEffect } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
 import { getToken } from "../utils/auth";
-import { ADD_RECIPE, GET_CATEGORIES } from "../constants/graphql";
+import { ADD_RECIPE, GET_CATEGORIES } from "../api/graphql";
+import ImageUpload from "@/components/ImageUpload.vue";
 
 const title = ref("");
 const description = ref("");
@@ -131,6 +129,16 @@ const image3 = ref("");
 const cooking_time = ref("");
 const preparation_time = ref("");
 const category_id = ref(null);
+
+const uploadedImage1 = (url) => {
+  image1.value = url;
+};
+const uploadedImage2 = (url) => {
+  image2.value = url;
+};
+const uploadedImage3 = (url) => {
+  image3.value = url;
+};
 
 const token = ref(null);
 const isAuthenticated = ref(false);
@@ -147,8 +155,6 @@ watchEffect(() => {
     try {
       categoryList.value = categories.value;
       isAuthenticated.value = user_id ? true : false;
-      console.log(isAuthenticated.value);
-      console.log(user_id);
     } catch (error) {
       console.error("Error retrieving categories:", error);
     }

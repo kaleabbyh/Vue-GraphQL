@@ -118,7 +118,7 @@
 import Slider from "../components/slider.vue";
 import { useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
-import { GET_RECIPE } from "../constants/graphql";
+import { GET_RECIPE } from "../api/graphql";
 import { getToken } from "../utils/auth";
 import { ref, watchEffect } from "vue";
 

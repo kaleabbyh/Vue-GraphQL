@@ -18,20 +18,74 @@
       </p>
       <div class="flex items-center justify-between">
         <router-link
+          v-if="recipe.description?.length > 100"
           :to="`/recipedetails/${recipe.id}`"
           class="text-blue-500 hover:underline"
           >Read More</router-link
         >
-        <span>4.2 rates</span>
+        <router-link
+          v-else
+          :to="`/recipedetails/${recipe.id}`"
+          class="text-blue-500 hover:underline"
+          >Details</router-link
+        >
+        <div class="flex items-center text-sm font-bold text-gray-700">
+          <span>{{ average }} </span>
+          <svg
+            class="star fill-yellow-500 w-4 h-4 cursor-pointer"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2L15.09 8.45L22 9.27L17.32 14.14L18.55 21L12 17.77L5.45 21L6.68 14.14L2 9.27L8.91 8.45L12 2Z"
+            />
+          </svg>
+        </div>
       </div>
-      <StarRating :initialRating="1" :totalStars="5" />
+      <Rating
+        :initialRating="0"
+        :totalStars="5"
+        :recipe_id="recipe?.id"
+        :isUserRatedBefore="isUserRatedBefore"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import StarRating from "./Rating.vue";
+import { ref } from "vue";
+import Rating from "./Rating.vue";
+import { getToken } from "../utils/auth";
 const { recipe } = defineProps(["recipe"]);
+
+const token = ref(null);
+token.value = getToken();
+
+const ratings = recipe.ratings;
+
+let isUserRatedBefore = false;
+for (let i = 0; i < ratings.length; i++) {
+  const rating = ratings[i];
+
+  if (rating.user.id === Number(token.value)) {
+    isUserRatedBefore = true;
+    break;
+  }
+}
+console.log(isUserRatedBefore);
+
+const totalRatings = ratings.length;
+let sum = 0;
+let average = 1.0;
+if (totalRatings) {
+  ratings.forEach((rating) => {
+    sum += Number(rating.value);
+  });
+
+  average = (sum / totalRatings).toFixed(1);
+} else {
+  average = 1.0;
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

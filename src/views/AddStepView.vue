@@ -45,7 +45,7 @@
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
-import { ADD_STEP } from "../constants/graphql";
+import { ADD_STEP } from "../api/graphql";
 
 const step_number = ref(null);
 const description = ref("");

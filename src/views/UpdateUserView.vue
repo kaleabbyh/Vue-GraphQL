@@ -79,76 +79,62 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, watchEffect, computed } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
-import { watchEffect, computed } from "vue";
-import { UPDATE_USER, getUser_Query } from "../constants/graphql";
+import { UPDATE_USER, getUser_Query } from "../api/graphql";
 
-export default {
-  //   components: { UserList },
-  setup() {
-    const firstname = ref("");
-    const lastname = ref("");
-    const email = ref("");
-    const password = ref("");
+const firstname = ref("");
+const lastname = ref("");
+const email = ref("");
+const password = ref("");
 
-    const route = useRoute();
-    const router = useRouter();
-    const userId = route.params.id;
+const route = useRoute();
+const router = useRouter();
+const userId = route.params.id;
 
-    const { mutate } = useMutation(UPDATE_USER);
+const { mutate } = useMutation(UPDATE_USER);
+const { result, loading, error } = useQuery(getUser_Query, { id: userId });
+const user = computed(() => result.value?.user[0]);
 
-    const { result, loading, error } = useQuery(getUser_Query, { id: userId });
-    const user = computed(() => result.value?.user[0]);
-    watchEffect(() => {
-      if (user.value) {
-        try {
-          const response = user.value;
-          firstname.value = response.firstname;
-          lastname.value = response.lastname;
-          email.value = response.email;
-          password.value = response.password;
-          console.log(user.value);
-        } catch (error) {
-          console.error("Error retrieving user:", error);
-        }
-      }
+watchEffect(() => {
+  if (user.value) {
+    try {
+      const response = user.value;
+      firstname.value = response.firstname;
+      lastname.value = response.lastname;
+      email.value = response.email;
+      password.value = response.password;
+      console.log(user.value);
+    } catch (error) {
+      console.error("Error retrieving user:", error);
+    }
+  }
+});
+
+const updateUser = async () => {
+  try {
+    const response = await mutate({
+      id: userId,
+      firstname: firstname.value,
+      lastname: lastname.value,
+      email: email.value,
+      password: password.value,
     });
+    console.log("User inserted:", response);
 
-    const updateUser = async () => {
-      try {
-        const response = await mutate({
-          id: userId,
-          firstname: firstname.value,
-          lastname: lastname.value,
-          email: email.value,
-          password: password.value,
-        });
-        console.log("User inserted:", response);
+    alert("user updated successful!");
+    router.push({ path: "/profile/" + userId });
 
-        alert("user updated successful!");
-        router.push({ path: "/profile/" + userId });
-
-        firstname.value = "";
-        lastname.value = "";
-        email.value = "";
-        password.value = "";
-      } catch (error) {
-        console.error("Error inserting user:", error);
-      }
-    };
-
-    return {
-      firstname,
-      lastname,
-      email,
-      password,
-      updateUser,
-    };
-  },
+    firstname.value = "";
+    lastname.value = "";
+    email.value = "";
+    password.value = "";
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  }
 };
 </script>
 

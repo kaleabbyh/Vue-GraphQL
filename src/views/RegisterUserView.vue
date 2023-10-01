@@ -89,8 +89,7 @@
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
-import UserList from "../components/UserList.vue";
-import { REGISTER_USER } from "../constants/graphql";
+import { REGISTER_USER } from "../api/graphql";
 import { setToken } from "../utils/auth";
 
 const firstname = ref("");

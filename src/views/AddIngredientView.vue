@@ -1,6 +1,7 @@
 <template>
   <div class="recipe-registration py-20 md:py-32">
     <h1 class="text-2xl text-center font-semibold">Add Ingredient</h1>
+
     <form
       @submit.prevent="addIngredient"
       class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
@@ -45,7 +46,7 @@
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
-import { ADD_INGREDIENT } from "../constants/graphql";
+import { ADD_INGREDIENT } from "../api/graphql";
 
 const name = ref("");
 const amount = ref("");
@@ -64,7 +65,7 @@ const addIngredient = async () => {
       recipe_id: recipe_id,
     });
 
-    console.log(response.data);
+    // window.alert("successfully added ingredient")
     router.push("/recipedetails/" + recipe_id);
 
     name.value = "";

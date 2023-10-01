@@ -81,7 +81,7 @@ import { ref, computed, watchEffect } from "vue";
 import PersonImage from "@/assets/images/person.png";
 import { useRouter, useRoute } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
-import { getUser_Query } from "../constants/graphql";
+import { getUser_Query } from "../api/graphql";
 
 const user = ref({});
 const recipes = ref([]);

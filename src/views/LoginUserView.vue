@@ -60,7 +60,7 @@ import { useRouter } from "vue-router";
 import { useQuery } from "@vue/apollo-composable";
 import { setToken } from "../utils/auth";
 
-import { GET_USER } from "../constants/graphql";
+import { GET_USER } from "../api/graphql";
 
 const email = ref("");
 const password = ref("");

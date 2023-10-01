@@ -49,7 +49,7 @@
         ></textarea>
       </div>
 
-      <div class="mb-6">
+      <!-- <div class="mb-6">
         <label for="image1" class="block font-medium mb-1">Image 1:</label>
         <input
           v-model="image1"
@@ -79,6 +79,34 @@
           required
           class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
         />
+      </div> -->
+
+      <div class="mb-6">
+        <label for="image1" class="block font-medium mb-1">Image One:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage1"
+          />
+        </div>
+      </div>
+      <div class="mb-6">
+        <label for="image1" class="block font-medium mb-1">Image Two:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage2"
+          />
+        </div>
+      </div>
+      <div class="mb-6">
+        <label for="image1" class="block font-medium mb-1">Image Three:</label>
+        <div class="w-full px-2 border border-gray-300 rounded">
+          <ImageUpload
+            class="max-w-lg mx-auto"
+            @imageUploaded="uploadedImage3"
+          />
+        </div>
       </div>
 
       <div class="mb-6">
@@ -122,11 +150,8 @@ import { ref, computed, watchEffect } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
 import { getToken } from "../utils/auth";
-import {
-  UPDATE_RECIPE,
-  GET_RECIPE,
-  GET_CATEGORIES,
-} from "../constants/graphql";
+import ImageUpload from "@/components/ImageUpload.vue";
+import { UPDATE_RECIPE, GET_RECIPE, GET_CATEGORIES } from "../api/graphql";
 
 const title = ref("");
 const description = ref("");
@@ -136,6 +161,16 @@ const image3 = ref("");
 const cooking_time = ref("");
 const preparation_time = ref("");
 const category_id = ref(null);
+
+const uploadedImage1 = (url) => {
+  image1.value = url;
+};
+const uploadedImage2 = (url) => {
+  image2.value = url;
+};
+const uploadedImage3 = (url) => {
+  image3.value = url;
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -154,16 +189,14 @@ watchEffect(() => {
     try {
       categoryList.value = categories?.value;
       recipe.value = myRecipe.value?.recipe?.[0];
-      title.value = recipe.value.title;
-      description.value = recipe.value.description;
-      image1.value = recipe.value.image1;
-      image2.value = recipe.value.image2;
-      image3.value = recipe.value.image3;
-      cooking_time.value = recipe.value.cooking_time;
-      preparation_time.value = recipe.value.preparation_time;
+      title.value = recipe.value?.title;
+      description.value = recipe.value?.description;
+      image1.value = recipe.value?.image1;
+      image2.value = recipe.value?.image2;
+      image3.value = recipe.value?.image3;
+      cooking_time.value = recipe.value?.cooking_time;
+      preparation_time.value = recipe.value?.preparation_time;
       category_id.value = null;
-
-      console.log(myRecipe.value);
     } catch (error) {
       console.error("Error retrieving categories:", error);
     }

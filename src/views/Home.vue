@@ -39,7 +39,7 @@
 import RecipeCard from "../components/RecipeCard.vue";
 import { watchEffect, ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
-import { GET_RECIPES } from "../constants/graphql";
+import { GET_RECIPES } from "../api/graphql";
 
 const { result } = useQuery(GET_RECIPES);
 const recipeList = ref([]);

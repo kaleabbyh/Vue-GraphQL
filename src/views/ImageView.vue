@@ -1,109 +1,113 @@
 <template>
-  <div class="mt-20 flex items-center">
-    <span v-for="star in totalStars" :key="star" @click="setRating(star)">
-      <svg
-        v-if="star <= currentRating"
-        class="star fill-yellow-400 w-6 h-6 cursor-pointer"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12 2L15.09 8.45L22 9.27L17.32 14.14L18.55 21L12 17.77L5.45 21L6.68 14.14L2 9.27L8.91 8.45L12 2Z"
-        />
-      </svg>
-      <svg
-        v-else
-        class="star fill-gray-400 w-6 h-6 cursor-pointer"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M21 9L15.94 8.46L12 4L8.06 8.46L3 9L7.04 12.54L6 17L12 14.81L18 17L16.96 12.54L21 9Z"
-        />
-      </svg>
-    </span>
+  <div class="my-4">
+    <input type="file" ref="fileInput" @change="uploadImage" />
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, defineEmits } from "vue";
+const selectedFile = ref(null);
 
-export default {
-  props: {
-    initialRating: {
-      type: Number,
-      default: 0,
-    },
-    totalStars: {
-      type: Number,
-      default: 5,
-    },
-  },
-  setup(props) {
-    const currentRating = ref(props.initialRating);
+const emit = defineEmits(["imageUploaded"]);
 
-    const setRating = (rating) => {
-      currentRating.value = rating;
-      console.log(currentRating.value);
-    };
+const uploadImage = async (event) => {
+  selectedFile.value = event.target.files[0];
+  const cloudName = "dqljcai0w";
+  const uploadPreset = "kal-upload";
 
-    return {
-      currentRating,
-      setRating,
-    };
-  },
+  const formData = new FormData();
+  formData.append("file", selectedFile.value);
+  formData.append("upload_preset", uploadPreset);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    console.log("Upload successful. Image URL:", data.secure_url);
+
+    // Emit the imageUploaded event with the URL
+    emit("imageUploaded", data.secure_url);
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
 };
 </script>
 
 <style scoped></style>
 
 <!-- <template>
-  <div class="mt-20 flex items-center">
-    <span v-for="star in totalStars" :key="star" @click="setRating(star)">
-      <svg
-        v-if="star <= currentRating"
-        class="star fill-yellow-400 w-6 h-6 cursor-pointer"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12 2L15.09 8.45L22 9.27L17.32 14.14L18.55 21L12 17.77L5.45 21L6.68 14.14L2 9.27L8.91 8.45L12 2Z"
-        />
-      </svg>
-      <svg
-        v-else
-        class="star fill-gray-400 w-6 h-6 cursor-pointer"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M21 9L15.94 8.46L12 4L8.06 8.46L3 9L7.04 12.54L6 17L12 14.81L18 17L16.96 12.54L21 9Z"
-        />
-      </svg>
-    </span>
+  <div class="mt-20">
+    <input type="file" ref="fileInput" @change="handleFileUpload" />
+    <button @click="uploadImage">Upload</button>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
+const selectedFile = ref(null);
 
-export default {
-  setup() {
-    const totalStars = 5;
-    const currentRating = ref(0);
+function handleFileUpload(event) {
+  selectedFile.value = event.target.files[0];
+}
 
-    const setRating = (rating) => {
-      currentRating.value = rating;
-      console.log(currentRating.value);
-    };
+const uploadImage = async () => {
+  const cloudName = "dqljcai0w";
+  const uploadPreset = "kal-upload";
 
-    return {
-      totalStars,
-      currentRating,
-      setRating,
-    };
-  },
+  const formData = new FormData();
+  formData.append("file", selectedFile.value);
+  formData.append("upload_preset", uploadPreset);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    console.log("Upload successful. Image URL:", data.secure_url);
+    return data.secure_url;
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
 };
+</script>
+
+<style scoped></style> -->
+
+<!-- <template>
+  <div class="mt-20">
+    images
+    <div>
+      <button @click="openUplaodWidget()">uplaod</button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+const widget = window.cloudniary.createUploadWidget(
+  { cloud_name: "dqljcai0w", upload_preset: "kal-upload" },
+  (error, result) => {
+    if (!error && result) {
+      console.log(result);
+    } else {
+      console.log(error);
+    }
+    console.log(error);
+  }
+);
+function openUplaodWidget() {
+  widget.open();
+}
 </script>
 
 <style scoped></style> -->
