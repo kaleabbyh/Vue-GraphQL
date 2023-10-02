@@ -5,7 +5,7 @@
         <div class="flex items-center">
           <router-link to="/" class="ml-2">
             <img
-              class="h-8 md:h-12"
+              class="h-6 md:h-10"
               src="../assets/images/recipe-logo.png"
               alt="Logo"
               style="width: auto"

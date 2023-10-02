@@ -104,7 +104,7 @@
           <button
             v-if="isAuthorized"
             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            @click="deleteCookingTime"
+            @click="deleteRecipe"
           >
             Delete
           </button>
@@ -116,32 +116,50 @@
 
 <script setup>
 import Slider from "../components/slider.vue";
-import { useRoute } from "vue-router";
-import { useQuery } from "@vue/apollo-composable";
-import { GET_RECIPE } from "../api/graphql";
+import { useRoute, useRouter } from "vue-router";
+import { useQuery, useMutation } from "@vue/apollo-composable";
+import { GET_RECIPE, DELETE_RECIPE } from "../api/graphql";
 import { getToken } from "../utils/auth";
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, watch } from "vue";
 
 const route = useRoute();
+const router = useRouter();
 const token = ref(null);
 const isAuthorized = ref(false);
-token.value = getToken();
+const recipe = ref();
 const recipeId = route.params.id;
+token.value = getToken();
 
 const { result } = useQuery(GET_RECIPE, { id: recipeId });
-const recipe = ref();
+const { mutate } = useMutation(DELETE_RECIPE);
 
-watchEffect(() => {
-  if (result.value) {
+const fetchRecipeDetails = async () => {
+  if (result) {
     try {
       recipe.value = result.value?.recipe?.[0];
-      isAuthorized.value = String(recipe.value.user_id) === String(token.value);
+      isAuthorized.value =
+        String(recipe.value?.user_id) === String(token?.value);
       console.log(isAuthorized.value);
-      console.log(recipe.value.category_id);
+      console.log(recipe.value?.category_id);
     } catch (error) {
       console.error("Error retrieving Recipes:", error);
     }
   }
+};
+
+const deleteRecipe = async () => {
+  try {
+    const response = await mutate({ id: recipeId });
+    const affectedRows = response.data.delete_recipe.affected_rows;
+    console.log(`Deleted ${affectedRows} recipe(s).`);
+    router.push("/");
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+  }
+};
+
+watchEffect(() => {
+  fetchRecipeDetails();
 });
 </script>
 

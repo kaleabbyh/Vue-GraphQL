@@ -65,7 +65,6 @@ const addIngredient = async () => {
       recipe_id: recipe_id,
     });
 
-    // window.alert("successfully added ingredient")
     router.push("/recipedetails/" + recipe_id);
 
     name.value = "";

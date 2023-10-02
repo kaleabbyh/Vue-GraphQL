@@ -11,8 +11,8 @@
     </div>
 
     <div class="relative" style="z-index: 1; overflow-y: scroll">
-      <div class="bg-gray-100">
-        <div class="container py-8 px-6">
+      <div class="bg-gray-100 py-5">
+     
           <h1 class="text-3xl font-bold mb-4 flex items-center justify-center">
             Welcome to KRecipes
           </h1>
@@ -21,7 +21,7 @@
           </p>
 
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-10 gap-8"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-10 py-5 md:px-20  gap-5"
           >
             <RecipeCard
               v-for="recipe in recipeList"
@@ -29,7 +29,7 @@
               :recipe="recipe"
             />
           </div>
-        </div>
+       
       </div>
     </div>
   </div>

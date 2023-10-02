@@ -283,6 +283,12 @@ export const SEARCH_RECIPE_BY_CATEGORY = gql`
   }
 `;
 
+export const DELETE_RECIPE=gql`mutation deleteRecipe($id: Int!) {
+  delete_recipe(where: {id: {_eq: $id}}) {
+    affected_rows
+  }
+}`
+
 export const GET_CATEGORIES = gql`
   query getCategories {
     category {
