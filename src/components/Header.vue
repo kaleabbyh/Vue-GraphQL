@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-white shadow-lg fixed w-full z-10">
-    <div class="container mx-auto px-6 py-3">
+    <div class="mx-4 py-2">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <router-link to="/" class="ml-2">

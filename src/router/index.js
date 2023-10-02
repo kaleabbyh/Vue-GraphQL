@@ -11,8 +11,9 @@ import AddIngredientView from "../views/AddIngredientView.vue";
 import AddStepView from "../views/AddStepView.vue";
 import RecipesView from "../views/RecipesView.vue";
 import UpdateRecipeView from "../views/UpdateRecipeView.vue";
+import AddCategoryView from "../views/AddCategoryView.vue";
 
-import ImageView from "../views/ImageView.vue";
+import ImageUpload from "../components/ImageUpload.vue";
 
 import { isAuthenticated } from "../utils/auth";
 
@@ -34,6 +35,9 @@ const router = createRouter({
       path: "/updateuser/:id",
       name: "updateuser",
       component: UpdateUserView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/login",
@@ -85,11 +89,25 @@ const router = createRouter({
       path: "/addingredient/:recipe_id",
       name: "addingredient",
       component: AddIngredientView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/addcategory",
+      name: "addcategory",
+      component: AddCategoryView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/addstep/:recipe_id",
       name: "addstep",
       component: AddStepView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/recipes",
@@ -99,7 +117,7 @@ const router = createRouter({
     {
       path: "/image",
       name: "image",
-      component: ImageView,
+      component: ImageUpload,
     },
   ],
 });

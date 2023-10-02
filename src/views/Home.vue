@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-image bg-cover bg-opacity-50 bg-center bg-fixed py-0 mt-20">
+  <div class="bg-image bg-cover bg-opacity-50 bg-center bg-fixed py-0 mt-18">
     <div>
       <div class="w-full h-96"></div>
       <div

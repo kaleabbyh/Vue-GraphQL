@@ -21,6 +21,7 @@
           >Recipe Category:</label
         >
         <select
+          @change="addCategory"
           v-model="category_id"
           id="category"
           required
@@ -33,6 +34,9 @@
             :value="category.id"
           >
             {{ category.name }}
+          </option>
+          <option value="add" class="hover:bg-gray-400">
+            Add your category
           </option>
         </select>
       </div>
@@ -129,9 +133,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, watch } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { getToken } from "../utils/auth";
 import { ADD_RECIPE, GET_CATEGORIES } from "../api/graphql";
 import ImageUpload from "@/components/ImageUpload.vue";
@@ -144,6 +148,10 @@ const image3 = ref("");
 const cooking_time = ref("");
 const preparation_time = ref("");
 const category_id = ref(null);
+
+const showAlert = ref(false);
+const router = useRouter();
+const route = useRouter();
 
 const uploadedImage1 = (url) => {
   image1.value = url;
@@ -166,7 +174,7 @@ const categories = computed(() => result.value?.category);
 const categoryList = ref([]);
 
 watchEffect(() => {
-  if (categories.value) {
+  if (categories) {
     try {
       categoryList.value = categories.value;
       isAuthenticated.value = user_id ? true : false;
@@ -176,8 +184,6 @@ watchEffect(() => {
   }
 });
 
-const showAlert = ref(false);
-const router = useRouter();
 const { mutate } = useMutation(ADD_RECIPE);
 
 const addRecipe = async () => {
@@ -210,4 +216,17 @@ const addRecipe = async () => {
     console.error("Error adding recipe:", error);
   }
 };
+
+const addCategory = () => {
+  if (category_id.value === "add") {
+    router.push("/addcategory");
+  }
+};
+
+watch(
+  () => route,
+  () => {
+    window.location.reload();
+  }
+);
 </script>

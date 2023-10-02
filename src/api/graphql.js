@@ -184,7 +184,7 @@ export const UPDATE_RECIPE = gql`
 
 export const GET_RECIPES = gql`
   query getRecipes {
-    recipe {
+    recipe(order_by: { created_at: desc }) {
       id
       title
       description
@@ -283,16 +283,18 @@ export const SEARCH_RECIPE_BY_CATEGORY = gql`
   }
 `;
 
-export const DELETE_RECIPE=gql`mutation deleteRecipe($id: Int!) {
-  delete_recipe(where: {id: {_eq: $id}}) {
-    affected_rows
+export const DELETE_RECIPE = gql`
+  mutation deleteRecipe($id: Int!) {
+    delete_recipe(where: { id: { _eq: $id } }) {
+      affected_rows
+    }
   }
-}`
+`;
 
 export const GET_CATEGORIES = gql`
   query getCategories {
     category {
-      image
+      description
       id
       name
       updated_at
@@ -311,6 +313,18 @@ export const ADD_INGREDIENT = gql`
         name
         amount
         recipe_id
+      }
+    }
+  }
+`;
+
+export const ADD_CATEGORY = gql`
+  mutation addCategory($name: String!, $description: String!) {
+    insert_category(objects: { description: $description, name: $name }) {
+      returning {
+        id
+        name
+        description
       }
     }
   }
