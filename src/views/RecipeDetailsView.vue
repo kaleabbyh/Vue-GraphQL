@@ -10,23 +10,38 @@
           :thumbnailImages="[recipe?.image1, recipe?.image2, recipe?.image3]"
         />
 
-        <p class="text-gray-700 mb-4">
+        <p class="border-t border-gray-300 py-2 text-gray-700 mb-4">
           {{ recipe?.description }}
         </p>
 
-        <div class="flex items-center my-3">
+        <div class="flex items-center py-2 my-3">
           <h3 class="text-md font-bold mr-2">Category</h3>
-          <div class="flex items-center ml-4">
-            <div
-              class="bg-blue-500 text-white px-5 py-1 rounded-full text-sm font-semibold mr-2"
-            >
-              {{ recipe?.category?.name }}
-            </div>
+          <div
+            class="flex items-center ml-4 bg-blue-500 text-white px-5 py-1 rounded-full text-sm font-semibold mr-2"
+          >
+            {{ recipe?.category?.name }}
           </div>
         </div>
+        <div
+          v-for="rating in ratings"
+          :key="rating.id"
+          class="bg-gray-100 p-4 my-4"
+        >
+          <div class="text-lg font-bold">
+            {{ rating.user?.firstname }} {{ rating.user?.lastname }}
+          </div>
+          <div class="text-gray-600 my-2">{{ rating.comment }}</div>
+
+          <Rating
+            :initialRating="rating.value"
+            :totalStars="5"
+            :recipe_id="recipe?.id"
+            :isUserRatedBefore="true"
+          />
+        </div>
       </div>
-      <div class="w-full md:w-1/2 lg:w-1/3 px-4">
-        <div class="flex items-center">
+      <div class="w-full md:w-1/2 px-4">
+        <div class="flex items-center py-2 border-t border-gray-300">
           <h2 class="text-lg font-bold mb-2 mr-2">Ingredients</h2>
 
           <router-link
@@ -55,7 +70,7 @@
           <li>{{ ingredient.amount }} {{ ingredient.name }}</li>
         </ul>
 
-        <div class="flex items-center mt-6">
+        <div class="flex items-center mt-6 py-2 border-t border-gray-300">
           <h2 class="text-lg font-bold mb-2 mr-2">Steps</h2>
           <router-link
             v-if="isAuthorized"
@@ -80,13 +95,17 @@
           :key="step.id"
           class="list-decimal ml-6"
         >
-          <span>{{ step.step_number }}). {{ step.description }}</span>
+          <span>{{ step.step_number }}. {{ step.description }}</span>
         </div>
-        <h3 class="text-md font-bold mt-6 mr-2">Cooking Time</h3>
+        <h3 class="text-md font-bold py-2 mt-6 mr-2 border-t border-gray-300">
+          Cooking Time
+        </h3>
         <div class="list-decimal ml-6">
           <span>recipe cooking time: {{ recipe?.cooking_time }} minutes</span>
         </div>
-        <h3 class="text-md font-bold mt-6 mr-2">Cooking Time</h3>
+        <h3 class="text-md font-bold py-2 mt-6 mr-2 border-t border-gray-300">
+          Cooking Time
+        </h3>
         <div class="list-decimal ml-6">
           <span
             >recipe cooking time: {{ recipe?.preparation_time }} minutes</span
@@ -115,7 +134,8 @@
 </template>
 
 <script setup>
-import Slider from "../components/slider.vue";
+import Slider from "@/components/slider.vue";
+import Rating from "@/components/Rating.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { GET_RECIPE, DELETE_RECIPE } from "../api/graphql";
@@ -128,19 +148,22 @@ const token = ref(null);
 const isAuthorized = ref(false);
 const recipe = ref();
 const recipeId = route.params.id;
+const recipeId1 = ref(route.params.id);
 token.value = getToken();
+const ratings = ref([]);
 
-const { result } = useQuery(GET_RECIPE, { id: recipeId });
+const { result } = useQuery(GET_RECIPE, { id: recipeId1.value });
 const { mutate } = useMutation(DELETE_RECIPE);
 
 const fetchRecipeDetails = async () => {
   if (result) {
     try {
       recipe.value = result.value?.recipe?.[0];
+      ratings.value = recipe.value?.ratings;
       isAuthorized.value =
         String(recipe.value?.user_id) === String(token?.value);
-      console.log(isAuthorized.value);
-      console.log(recipe.value?.category_id);
+
+      console.log(ratings.value);
     } catch (error) {
       console.error("Error retrieving Recipes:", error);
     }
@@ -161,6 +184,15 @@ const deleteRecipe = async () => {
 watchEffect(() => {
   fetchRecipeDetails();
 });
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    recipeId1.value = newId;
+    fetchRecipeDetails();
+    window.location.reload();
+  }
+);
 </script>
 
 <style>

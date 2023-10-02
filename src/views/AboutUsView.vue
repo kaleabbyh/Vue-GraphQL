@@ -72,8 +72,6 @@
           >
             We would love to hear from you! If you have any questions, feedback,
             or partnership inquiries, please don't hesitate to reach out to us.
-            You can contact our team at [email address] or connect with us on
-            [social media platforms].
           </p>
         </div>
       </div>

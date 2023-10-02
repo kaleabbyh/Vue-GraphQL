@@ -97,7 +97,6 @@ const addRating = async () => {
     });
 
     console.log(response.data);
-    alert("rating added successfully!");
     window.location.reload();
 
     value.value = null;

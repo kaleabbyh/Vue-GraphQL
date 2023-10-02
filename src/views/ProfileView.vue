@@ -45,12 +45,20 @@
             class="flex justify-between"
           >
             <span>{{ recipe.title }}</span>
-            <router-link
-              :to="`/updaterecipe/${recipe.id}`"
-              class="bg-green-500 text-white py-1 px-4 my-2 rounded"
-            >
-              Edit
-            </router-link>
+            <div class="flex justify-center">
+              <router-link
+                :to="`/updaterecipe/${recipe.id}`"
+                class="bg-green-500 text-white py-1 px-4 mx-1 my-2 rounded"
+              >
+                Edit
+              </router-link>
+              <router-link
+                :to="`/recipedetails/${recipe.id}`"
+                class="bg-indigo-500 text-white py-1 px-4 mx-1 my-2 rounded"
+              >
+                view
+              </router-link>
+            </div>
           </li>
         </ul>
       </div>
@@ -90,7 +98,7 @@ const router = useRouter();
 const userId = route.params.id;
 
 const { result, loading, error } = useQuery(getUser_Query, { id: userId });
-const user_copy = computed(() => result.value?.user[0]);
+const userDetail = computed(() => result.value?.user[0]);
 console.log(result.value);
 const constants = {
   location: "Addis Ababa",
@@ -103,20 +111,20 @@ const constants = {
 };
 
 watchEffect(() => {
-  if (user_copy.value) {
+  if (userDetail.value) {
     try {
       user.value = {
         id: userId,
-        name: user_copy.value.firstname + " " + user_copy.value.lastname,
-        email: user_copy.value.email,
-        joinedDate: user_copy.value.created_at.split("T")[0],
+        name: userDetail.value.firstname + " " + userDetail.value.lastname,
+        email: userDetail.value.email,
+        joinedDate: userDetail.value.created_at.split("T")[0],
         location: constants.location,
         avatar: PersonImage,
         about: constants.about,
         phone: constants.phone,
       };
 
-      recipes.value = user_copy.value.recipes;
+      recipes.value = userDetail.value.recipes;
     } catch (error) {
       console.error("Error retrieving user:", error);
     }

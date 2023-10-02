@@ -65,7 +65,6 @@ const addStep = async () => {
     });
 
     console.log(response.data);
-    alert("Step added successfully!");
     router.push("/recipedetails/" + recipe_id);
 
     step_number.value = null;

@@ -50,7 +50,12 @@
       </div>
 
       <div class="mb-6">
-        <label for="image1" class="block font-medium mb-1">Image One:</label>
+        <label for="image1" class="block font-medium mb-1"
+          >Image One:
+          <span class="px-2 text-gray-500 text-xs mt-1">
+            Please ensure the image size is less than or equal to 1MB.
+          </span></label
+        >
         <div class="w-full px-2 border border-gray-300 rounded">
           <ImageUpload
             class="max-w-lg mx-auto"
@@ -59,7 +64,12 @@
         </div>
       </div>
       <div class="mb-6">
-        <label for="image1" class="block font-medium mb-1">Image Two:</label>
+        <label for="image1" class="block font-medium mb-1"
+          >Image Two:
+          <span class="px-2 text-gray-500 text-xs mt-1">
+            Please ensure the image size is less than or equal to 1MB.
+          </span></label
+        >
         <div class="w-full px-2 border border-gray-300 rounded">
           <ImageUpload
             class="max-w-lg mx-auto"
@@ -68,7 +78,12 @@
         </div>
       </div>
       <div class="mb-6">
-        <label for="image1" class="block font-medium mb-1">Image Three:</label>
+        <label for="image1" class="block font-medium mb-1"
+          >Image Three:
+          <span class="px-2 text-gray-500 text-xs mt-1">
+            Please ensure the image size is less than or equal to 1MB.
+          </span></label
+        >
         <div class="w-full px-2 border border-gray-300 rounded">
           <ImageUpload
             class="max-w-lg mx-auto"

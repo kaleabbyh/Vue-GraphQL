@@ -1,11 +1,10 @@
 <template>
   <div class="bg-contact-image bg-cover bg-center mt-10">
     <div class="bg-opacity-50 bg-white py-20">
-      <div class="container px-4 grid md:grid-cols-2 gap-4 md:gap-4">
+      <div class="container mx-20 px-4 grid md:grid-cols-2 gap-4 md:gap-4">
         <div
-          class="max-w-lg ml-20 justify-end bg-white shadow-lg rounded-lg px-8 py-6"
+          class="max-w-lg justify-end bg-white shadow-lg rounded-lg px-8 py-6"
         >
-          <!-- <h3 class="text-xl font-bold mb-4">Form</h3> -->
           <form class="bg-white rounded-lg py-6 mb-8">
             <div class="mb-4">
               <label
@@ -65,7 +64,7 @@
         </div>
 
         <div
-          class="max-w-md mr-20 justify-start h-full bg-white shadow-lg rounded-lg px-8 py-6"
+          class="max-w-lg justify-start h-full bg-white shadow-lg rounded-lg px-8 py-6"
         >
           <p class="text-gray-700">
             You can also reach us using the following contact information:

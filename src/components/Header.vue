@@ -108,27 +108,32 @@
 
       <div v-if="showMobileMenu" class="md:hidden mt-3">
         <router-link
+          @click="toggleMobileMenu"
           class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"
           to="/"
           >Home</router-link
         >
         <router-link
+          @click="toggleMobileMenu"
           class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"
           to="/recipes"
           >Recipes</router-link
         >
         <router-link
+          @click="toggleMobileMenu"
           class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"
           to="/aboutus"
           >About</router-link
         >
         <router-link
+          @click="toggleMobileMenu"
           class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"
           to="/contactus"
           >Contact</router-link
         >
 
         <router-link
+          @click="toggleMobileMenu"
           to="/login"
           v-if="!isLoggedIn"
           class="text-lg font-semibold text-indigo-900 hover:text-gray-600 px-3 py-2 rounded-md"
@@ -153,12 +158,14 @@
           >
             <!-- Dropdown content here -->
             <router-link
+              @click="toggleMobileMenu"
               :to="`/profile/${token}`"
               class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
             >
               Profile
             </router-link>
             <router-link
+              @click="toggleMobileMenu"
               :to="`/profile/${token}`"
               class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
             >
@@ -193,7 +200,7 @@ isLoggedIn.value = getToken() ? true : false;
 
 const logout = () => {
   removeToken();
-  router.push("/");
+  // router.push("/");
   window.location.reload();
 };
 
