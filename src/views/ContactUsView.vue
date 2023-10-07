@@ -1,7 +1,7 @@
 <template>
   <div class="bg-contact-image bg-cover bg-center mt-10">
-    <div class="bg-opacity-50 bg-white py-20">
-      <div class="container mx-20 px-4 grid md:grid-cols-2 gap-4 md:gap-4">
+    <div class="bg-opacity-90 bg-white py-20">
+      <div class="container mx-20 px-4 grid md:grid-cols-2 gap-2">
         <div
           class="max-w-lg justify-end bg-white shadow-lg rounded-lg px-8 py-6"
         >

@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-image bg-cover bg-center bg-fixed mt-20">
-    <div class="bg-gray-100 bg-opacity-50 rounded-lg m-auto md:m-10 py-12">
+  <div class="bg-image bg-cover bg-center bg-fixed">
+    <div class="bg-gray-100 bg-opacity-80 rounded-lg m-auto md:p-20 mt-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-8">
           About Us

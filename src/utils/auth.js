@@ -1,20 +1,30 @@
-// auth.js
-// import jwt from "jsonwebtoken";
+////////////////////////////////
+import jwtDecode from "jwt-decode";
 
-export function getToken() {
-  return localStorage.getItem("token");
+export function getAccessToken() {
+  return localStorage.getItem("accesstoken");
 }
 
-export function setToken(id) {
-  // const token = jwt.sign({ id }, "your_secret_key");
-  localStorage.setItem("token", id);
+export function setAccessToken(id) {
+  localStorage.setItem("accesstoken", id);
 }
 
-export function removeToken() {
-  localStorage.removeItem("token");
+export function removeAccessToken() {
+  localStorage.removeItem("accesstoken");
 }
 
 export function isAuthenticated() {
-  const token = getToken();
+  const token = getAccessToken();
   return !!token;
 }
+
+export const extractIdFromToken = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    const id = decodedToken.id;
+    return id;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return null;
+  }
+};

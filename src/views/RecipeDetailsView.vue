@@ -139,7 +139,7 @@ import Rating from "../components/Rating.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { GET_RECIPE, DELETE_RECIPE } from "../api/graphql";
-import { getToken } from "../utils/auth";
+import { getAccessToken, extractIdFromToken } from "../utils/auth";
 import { ref, watchEffect, watch } from "vue";
 
 const route = useRoute();
@@ -149,7 +149,9 @@ const isAuthorized = ref(false);
 const recipe = ref();
 const recipeId = route.params.id;
 const recipeId1 = ref(route.params.id);
-token.value = getToken();
+token.value = getAccessToken();
+const user_id = extractIdFromToken(token.value);
+
 const ratings = ref([]);
 
 const { result } = useQuery(GET_RECIPE, { id: recipeId1.value });
@@ -160,8 +162,7 @@ const fetchRecipeDetails = async () => {
     try {
       recipe.value = result.value?.recipe?.[0];
       ratings.value = recipe.value?.ratings;
-      isAuthorized.value =
-        String(recipe.value?.user_id) === String(token?.value);
+      isAuthorized.value = String(recipe.value?.user_id) === String(user_id);
 
       console.log(ratings.value);
     } catch (error) {

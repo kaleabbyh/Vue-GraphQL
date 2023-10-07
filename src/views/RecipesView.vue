@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-image bg-cover bg-center bg-fixed py-0 mt-12">
-    <div class="relative bg-opacity-90">
-      <div class="bg-gray-100 bg-opacity-90 py-8 min-h-screen">
+  <div class="bg-image bg-cover bg-center bg-fixed py-0">
+    <div class="relative bg-opacity-90 py-2">
+      <div class="bg-gray-100 bg-opacity-90 pt-24 md:pt-28 min-h-screen">
         <h1 class="text-3xl font-bold mb-4 flex items-center justify-center">
           Welcome to KRecipes
         </h1>

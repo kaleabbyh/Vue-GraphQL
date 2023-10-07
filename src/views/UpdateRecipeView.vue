@@ -149,7 +149,6 @@
 import { ref, computed, watchEffect } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
-import { getToken } from "../utils/auth";
 import ImageUpload from "@/components/ImageUpload.vue";
 import { UPDATE_RECIPE, GET_RECIPE, GET_CATEGORIES } from "../api/graphql";
 

@@ -12,6 +12,7 @@ import AddStepView from "../views/AddStepView.vue";
 import RecipesView from "../views/RecipesView.vue";
 import UpdateRecipeView from "../views/UpdateRecipeView.vue";
 import AddCategoryView from "../views/AddCategoryView.vue";
+import CategoryView from "../views/CategoryView.vue";
 
 import ImageUpload from "../components/ImageUpload.vue";
 
@@ -113,6 +114,11 @@ const router = createRouter({
       path: "/recipes",
       name: "recipes",
       component: RecipesView,
+    },
+    {
+      path: "/categories",
+      name: "categories",
+      component: CategoryView,
     },
     {
       path: "/image",

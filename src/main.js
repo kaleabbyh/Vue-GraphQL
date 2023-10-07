@@ -9,16 +9,17 @@ import App from "./App.vue";
 import { setContext } from "@apollo/client/link/context";
 import router from "./router";
 import "./assets/tailwind.css";
-// import dotenv from "dotenv";
-
-// dotenv.config();
+import { getAccessToken } from "./utils/auth";
 
 const authLink = setContext((_, { headers }) => {
+  const token = getAccessToken();
+
   return {
     headers: {
       ...headers,
       "x-hasura-admin-secret":
         "FV3YGvvYSM5qACsePMZBr7YMBJqehx4jzKmFqtoRRkLVtvVMGADLo315227YEXbq",
+      Authorization: `Bearer ${token}`,
     },
   };
 });

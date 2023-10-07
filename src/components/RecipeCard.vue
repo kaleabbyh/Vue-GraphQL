@@ -55,11 +55,12 @@
 <script setup>
 import { ref } from "vue";
 import Rating from "./Rating.vue";
-import { getToken } from "../utils/auth";
+import { getAccessToken, extractIdFromToken } from "../utils/auth";
 const { recipe } = defineProps(["recipe"]);
 
-const token = ref(null);
-token.value = getToken();
+const token = ref(getAccessToken());
+const id = extractIdFromToken(token.value);
+token.value = id;
 
 const ratings = recipe.ratings;
 

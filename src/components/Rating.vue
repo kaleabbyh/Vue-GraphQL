@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { getToken } from "../utils/auth";
+import { getAccessToken, extractIdFromToken } from "../utils/auth";
 import { useMutation } from "@vue/apollo-composable";
 import { ADD_RATING } from "../api/graphql";
 
@@ -73,8 +73,10 @@ const props = defineProps({
   },
 });
 
-const token = ref(null);
-token.value = getToken();
+const token = ref(getAccessToken());
+const id = extractIdFromToken(token.value);
+token.value = id;
+
 const currentRating = ref(props.initialRating);
 const commentContent = ref(null);
 const isUserRatedBefore = props.isUserRatedBefore;

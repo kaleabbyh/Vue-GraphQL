@@ -136,7 +136,7 @@
 import { ref, computed, watchEffect, watch } from "vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { useRouter, useRoute } from "vue-router";
-import { getToken } from "../utils/auth";
+import { getAccessToken, extractIdFromToken } from "../utils/auth";
 import { ADD_RECIPE, GET_CATEGORIES } from "../api/graphql";
 import ImageUpload from "@/components/ImageUpload.vue";
 
@@ -163,10 +163,10 @@ const uploadedImage3 = (url) => {
   image3.value = url;
 };
 
-const token = ref(null);
+const token = getAccessToken();
+const user_id = extractIdFromToken(token);
 const isAuthenticated = ref(false);
-token.value = getToken();
-let user_id = token.value;
+console.log("ID:", user_id);
 
 const { result } = useQuery(GET_CATEGORIES);
 const categories = computed(() => result.value?.category);

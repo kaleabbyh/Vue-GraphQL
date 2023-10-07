@@ -40,7 +40,7 @@
 
 <script>
 import { ref, watch } from "vue";
-import FoodImage from "@/assets/images/food.png";
+import FoodImage from "@/assets/images/foodicon.png";
 
 export default {
   name: "Slider",

@@ -87,6 +87,41 @@ export const GET_USER = gql`
   }
 `;
 
+export const LOGIN = gql`
+  mutation ($email: String!, $password: String!) {
+    Login(email: $email, password: $password) {
+      id
+      firstname
+      lastname
+      password
+      token
+    }
+  }
+`;
+
+export const REGISTER = gql`
+  mutation (
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+  ) {
+    Register(
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      password: $password
+    ) {
+      id
+      firstname
+      lastname
+      email
+      password
+      token
+    }
+  }
+`;
+
 export const USERS_QUERY = gql`
   query getUsers {
     users {

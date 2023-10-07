@@ -99,7 +99,7 @@ const userId = route.params.id;
 
 const { result, loading, error } = useQuery(getUser_Query, { id: userId });
 const userDetail = computed(() => result.value?.user[0]);
-console.log(result.value);
+
 const constants = {
   location: "Addis Ababa",
   about: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 

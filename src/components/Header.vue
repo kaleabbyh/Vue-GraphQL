@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white shadow-lg fixed w-full z-10">
+  <nav class="bg-white shadow-lg py-3 fixed w-full z-10">
     <div class="mx-4 py-2">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
@@ -60,13 +60,13 @@
               >
                 <!-- Dropdown content here -->
                 <router-link
-                  :to="`/profile/${token}`"
+                  :to="`/profile/${id}`"
                   class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Profile
                 </router-link>
                 <router-link
-                  :to="`/profile/${token}`"
+                  :to="`/profile/${id}`"
                   class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Settings
@@ -159,14 +159,14 @@
             <!-- Dropdown content here -->
             <router-link
               @click="toggleMobileMenu"
-              :to="`/profile/${token}`"
+              :to="`/profile/${id}`"
               class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
             >
               Profile
             </router-link>
             <router-link
               @click="toggleMobileMenu"
-              :to="`/profile/${token}`"
+              :to="`/profile/${id}`"
               class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
             >
               Settings
@@ -186,22 +186,29 @@
 
 <script setup>
 import { ref } from "vue";
-import { getToken, removeToken } from "../utils/auth";
+import {
+  getAccessToken,
+  extractIdFromToken,
+  removeAccessToken,
+} from "../utils/auth";
 import { useRouter } from "vue-router";
 
 const showMobileMenu = ref(false);
 const showDropdown = ref(false);
 const isLoggedIn = ref(false);
-const token = ref(null);
+//const token = ref(null);
+const token = getAccessToken();
+const id = ref(extractIdFromToken(token));
+// console.log("ID:", id.value);
+
 const router = useRouter();
 
-token.value = getToken();
-isLoggedIn.value = getToken() ? true : false;
+isLoggedIn.value = getAccessToken() ? true : false;
 
 const logout = () => {
-  removeToken();
-  // router.push("/");
-  window.location.reload();
+  removeAccessToken();
+  router.push("/");
+  // window.location.reload();
 };
 
 const toggleMobileMenu = () => {
