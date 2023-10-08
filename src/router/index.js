@@ -13,6 +13,7 @@ import RecipesView from "../views/RecipesView.vue";
 import UpdateRecipeView from "../views/UpdateRecipeView.vue";
 import AddCategoryView from "../views/AddCategoryView.vue";
 import CategoryView from "../views/CategoryView.vue";
+import RecipesByCategoryView from "../views/RecipesByCategoryView.vue";
 
 import ImageUpload from "../components/ImageUpload.vue";
 
@@ -114,6 +115,11 @@ const router = createRouter({
       path: "/recipes",
       name: "recipes",
       component: RecipesView,
+    },
+    {
+      path: "/recipes/:category_id",
+      name: "recipesbycategory",
+      component: RecipesByCategoryView,
     },
     {
       path: "/categories",

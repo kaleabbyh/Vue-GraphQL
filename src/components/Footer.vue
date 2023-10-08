@@ -81,6 +81,24 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { GET_CATEGORIES } from "../api/graphql";
+import { useQuery } from "@vue/apollo-composable";
+import { ref, watchEffect } from "vue";
+const categories = ref([]);
+const { result } = useQuery(GET_CATEGORIES);
+
+watchEffect(() => {
+  if (result.value) {
+    try {
+      const allCategories = result.value?.category;
+      categories.value = allCategories.slice(0, 4);
+      console.log(allCategories.slice(0, 4));
+    } catch (error) {
+      console.error("Error retrieving Recipes:", error);
+    }
+  }
+});
+</script>
 
 <style lang="scss" scoped></style>

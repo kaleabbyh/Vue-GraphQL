@@ -26,6 +26,11 @@
             >
             <router-link
               class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
+              to="/categories"
+              >Categories</router-link
+            >
+            <router-link
+              class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md"
               to="/contactus"
               >Contact</router-link
             >
@@ -119,6 +124,14 @@
           to="/recipes"
           >Recipes</router-link
         >
+
+        <router-link
+          @click="toggleMobileMenu"
+          class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"
+          to="/categories"
+          >Categories</router-link
+        >
+
         <router-link
           @click="toggleMobileMenu"
           class="block text-gray-800 hover:text-gray-600 px-4 py-2 rounded-md"

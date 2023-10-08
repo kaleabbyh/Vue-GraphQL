@@ -219,7 +219,7 @@ export const UPDATE_RECIPE = gql`
 
 export const GET_RECIPES = gql`
   query getRecipes {
-    recipe(order_by: { created_at: desc }) {
+    recipe(order_by: { updated_at: desc, created_at: desc }) {
       id
       title
       description
@@ -235,6 +235,14 @@ export const GET_RECIPES = gql`
       category {
         name
         id
+      }
+      steps {
+        id
+        description
+        step_number
+        recipe_id
+        updated_at
+        created_at
       }
       ingredients {
         id
@@ -306,9 +314,65 @@ export const GET_RECIPE = gql`
   }
 `;
 
+export const GET_RECIPE_BY_CATEGORY = gql`
+  query getRecipe($category_id: Int) {
+    recipe(
+      where: { category_id: { _eq: $category_id } }
+      order_by: { updated_at: desc, created_at: desc }
+    ) {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+      ingredients {
+        amount
+        name
+        id
+        recipe_id
+      }
+
+      steps {
+        id
+        description
+        recipe_id
+        step_number
+      }
+      category {
+        image
+        name
+        description
+        id
+      }
+
+      ratings {
+        comment
+        id
+        value
+        user {
+          id
+          email
+          firstname
+          lastname
+        }
+      }
+    }
+  }
+`;
+
 export const SEARCH_RECIPE_BY_CATEGORY = gql`
   query GetRecipesByCategory($category_name: String!) {
-    category(where: { name: { _ilike: $category_name } }) {
+    category(
+      where: { name: { _ilike: $category_name } }
+      order_by: { updated_at: desc, created_at: desc }
+    ) {
       id
       recipes {
         id
@@ -328,10 +392,24 @@ export const DELETE_RECIPE = gql`
 
 export const GET_CATEGORIES = gql`
   query getCategories {
-    category {
-      description
+    category(order_by: { updated_at: desc, created_at: desc }) {
       id
       name
+      image
+      description
+      updated_at
+      created_at
+    }
+  }
+`;
+
+export const GET_CATEGORy = gql`
+  query getCategory($id: Int!) {
+    category(where: { id: { _eq: $id } }) {
+      id
+      name
+      image
+      description
       updated_at
       created_at
     }

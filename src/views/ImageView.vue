@@ -1,5 +1,5 @@
 <template>
-  <div class="my-4">
+  <div class="mt-10 pt-10">
     <input type="file" ref="fileInput" @change="uploadImage" />
   </div>
 </template>
