@@ -5,8 +5,12 @@
         <div class="flex items-center justify-center mb-6">
           <div class="flex flex-col md:flex-row items-center rounded-lg">
             <div class="rounded-lg p-10 ml-4 max-w-sm text-gray-700">
-              <h2 class="text-xl mb-4">Explore your favourite Recipes</h2>
-              <h3 class="text-lg mb-10">Add your own recipes here</h3>
+              <h2 class="text-xl mb-4 capitalize">
+                Explore our favourite Recipes
+              </h2>
+              <h3 class="text-lg mb-10 capitalize">
+                Add your own recipes here
+              </h3>
               <router-link
                 to="/addrecipe"
                 class="ml-2 px-4 py-2 items-center bg-blue-500 text-white rounded-md"
@@ -67,12 +71,15 @@
 
           <div v-if="selectedOption === 'Ingredients'">
             <input
-              v-model="ingredientSearch"
+              v-model="searchIngredient"
               type="text"
               placeholder="Search by ingredient"
               class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-300"
             />
-            <button class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md">
+            <button
+              @click="searchRecipes"
+              class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+            >
               Search
             </button>
           </div>
@@ -137,13 +144,13 @@ import {
 
 const selectedOption = ref("Filter");
 const preparationTimeSearch = ref(null);
-const ingredientSearch = ref("");
+const searchIngredient = ref("");
 const searchTitle = ref("");
 
 const recipeList = ref([]);
 
 const currentPage = ref(1);
-const itemsPerPage = 6;
+const itemsPerPage = 3;
 
 const { result } = useQuery(GET_RECIPES);
 
@@ -164,14 +171,25 @@ watch(searchTitle, () => {
 const { result: recipeByIngredient, refetch: ingredientRefetch } = useQuery(
   GET_RECIPE_BY_INGREDIENT,
   {
-    ingredient: `%${ingredientSearch.value}%`,
+    ingredient: `%${searchIngredient.value}%`,
   }
 );
-watch(ingredientSearch, () => {
+
+watch(
+  () => searchIngredient.value,
+  (newVal, oldVal) => {
+    ingredientRefetch({
+      ingredient: `%${newVal}%`,
+    });
+  },
+  { immediate: true }
+);
+
+const searchRecipes = () => {
   ingredientRefetch({
-    name: `%${ingredientSearch.value}%`,
+    ingredient: `%${searchIngredient.value}%`,
   });
-});
+};
 
 //////////////////////////////
 const { result: recipeByPreparationTime, refetch: preparationTimeRefetch } =
@@ -192,7 +210,7 @@ watchEffect(() => {
     } catch (error) {
       console.error("Error retrieving Recipes:", error);
     }
-  } else if (selectedOption?.value == "Title") {
+  } else if (selectedOption?.value == "Title" && searchTitle.value != "") {
     try {
       recipeList.value = recipeByTitle?.value?.recipe;
     } catch (error) {
@@ -201,6 +219,7 @@ watchEffect(() => {
   } else if (selectedOption?.value == "Ingredients") {
     try {
       recipeList.value = recipeByIngredient?.value?.recipe;
+      console.log(recipeList.value);
     } catch (error) {
       console.error("Error retrieving Recipes:", error);
     }

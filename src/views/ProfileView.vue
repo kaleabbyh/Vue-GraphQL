@@ -1,6 +1,6 @@
 <template>
   <div
-    class="user-profile bg-gray-100 min-h-screen flex items-center justify-center pt-20 md:pt-28"
+    class="user-profile bg-gray-100 min-h-screen flex items-center justify-center py-20 md:pt-28"
   >
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-xl">
       <div class="relative">

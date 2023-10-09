@@ -17,7 +17,7 @@
           <router-link to="/categories">
             <img
               src="../assets/images/mix.png"
-              class="h-12 md:h-16 rounded-full bg-white p-2 transition-transform duration-300 hover:scale-110"
+              class="h-12 md:h-20 rounded-full bg-white p-2 transition-transform duration-300 hover:scale-110"
               alt=""
             />
           </router-link>

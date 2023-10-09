@@ -221,7 +221,7 @@ isLoggedIn.value = getAccessToken() ? true : false;
 const logout = () => {
   removeAccessToken();
   router.push("/");
-  // window.location.reload();
+  window.location.reload();
 };
 
 const toggleMobileMenu = () => {

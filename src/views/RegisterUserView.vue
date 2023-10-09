@@ -107,6 +107,12 @@ const { mutate } = useMutation(REGISTER);
 
 const insertUser = async () => {
   try {
+    console.log({
+      firstname: firstname.value,
+      lastname: lastname.value,
+      email: email.value,
+      password: password.value,
+    });
     const response = await mutate({
       firstname: firstname.value,
       lastname: lastname.value,
