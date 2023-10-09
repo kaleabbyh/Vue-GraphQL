@@ -134,8 +134,8 @@
 </template>
 
 <script setup>
-import Slider from "../components/slider.vue";
-import Rating from "../components/Rating.vue";
+import Slider from "@/components/slider.vue";
+import Rating from "@/components/Rating.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { GET_RECIPE, DELETE_RECIPE } from "../api/graphql";
