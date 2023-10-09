@@ -73,7 +73,6 @@ for (let i = 0; i < ratings.length; i++) {
     break;
   }
 }
-console.log(isUserRatedBefore);
 
 const totalRatings = ratings.length;
 let sum = 0;

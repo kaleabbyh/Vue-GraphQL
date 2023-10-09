@@ -1,15 +1,15 @@
 <template>
   <div class="bg-image bg-cover bg-opacity-50 bg-center bg-fixed py-0 mt-18">
     <div>
-      <div class="w-full h-96 bg-gray-900 opacity-60"></div>
-      <div class="w-full h-56 bg-gray-900 opacity-60"></div>
+      <div class="w-full h-96 bg-gray-800 opacity-60"></div>
+      <div class="w-full h-56 bg-gray-800 opacity-60"></div>
       <div
         class="overlay absolute inset-0 flex flex-col items-center justify-center text-white p-8"
       >
         <h1 class="text-4xl font-bold mt-20 mb-4">Special Food Recipes</h1>
         <p class="text-3xl mb-20">Explore our latest food recipes</p>
         <div
-          class="w-full mt-20 sm:gap-2 md:gap-10 flex flex-row items-center justify-center"
+          class="w-full mt-20 sm:gap-2 md:gap-10 flex flex-row opacity-70 items-center justify-center"
         >
           <div
             v-for="category in categoryList"
@@ -59,9 +59,9 @@
           />
         </div>
         <div
-          class="border shadow-md rounded-md flex flex-col items-center justify-center text-gray-900 p-8"
+          class="border rounded-md flex flex-col items-center justify-center text-gray-900"
         >
-          <p class="text-3xl my-2 font-bold capitalize">
+          <p class="text-3xl mt-10 font-bold capitalize">
             {{ recipeList[0]?.title }} recipe
           </p>
         </div>

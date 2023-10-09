@@ -5,7 +5,7 @@
         <div
           class="flex flex-col items-center justify-center text-gray-900 p-8"
         >
-          <p class="text-3xl my-5 font-bold capitalize">
+          <p class="text-2xl my-5 font-medium capitalize">
             {{ category?.name }} food recipe category
           </p>
         </div>
@@ -23,7 +23,7 @@
               </router-link>
             </div>
             <div class="rounded-lg p-10 ml-4">
-              <h2 class="text-xl font-bold mb-4 capitalize">
+              <h2 class="text-xl font-medium mb-4 capitalize">
                 Category Name: {{ category?.name }}
               </h2>
               <h3 class="text-lg font-semibold mb-2">Description:</h3>
@@ -34,15 +34,16 @@
           </div>
         </div>
         <h1
-          class="text-2xl font-bold my-10 flex items-center justify-center capitalize"
+          class="text-2xl font-medium mt-10 mb-2 flex items-center justify-center capitalize"
         >
           {{ category?.name }} Category Recipes
         </h1>
         <p class="text-gray-600 mb-8 flex items-center justify-center">
-          Discover our latest recipes for every occasion
+          Discover our {{ category?.name }} Category recipes
         </p>
 
         <div
+          v-if="recipeList.length > 0"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-10 py-5 md:px-20 gap-5"
         >
           <RecipeCard
@@ -51,13 +52,19 @@
             :recipe="recipe"
           />
         </div>
+        <div
+          class="text-gray-600 text-2xl mb-8 flex items-center justify-center"
+          v-else
+        >
+          No recipes by this category
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import RecipeCard from "../components/RecipeCard.vue";
+import RecipeCard from "@/components/RecipeCard.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GET_RECIPE_BY_CATEGORY, GET_CATEGORy } from "../api/graphql";
 import { ref, watchEffect, watch } from "vue";

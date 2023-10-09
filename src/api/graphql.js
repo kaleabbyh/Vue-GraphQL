@@ -314,6 +314,153 @@ export const GET_RECIPE = gql`
   }
 `;
 
+export const GET_RECIPE_BY_TITLE = gql`
+  query getRecipe($title: String!) {
+    recipe(where: { title: { _ilike: $title } }) {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+      ingredients {
+        amount
+        name
+        id
+        recipe_id
+      }
+
+      steps {
+        id
+        description
+        recipe_id
+        step_number
+      }
+      category {
+        image
+        name
+        id
+      }
+
+      ratings {
+        comment
+        id
+        value
+        user {
+          id
+          email
+          firstname
+          lastname
+        }
+      }
+    }
+  }
+`;
+
+export const GET_RECIPE_BY_INGREDIENT = gql`
+  query getRecipe($ingredient: String!) {
+    recipe(where: { ingredients: { name: { _ilike: $ingredient } } }) {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+      ingredients {
+        amount
+        name
+        id
+        recipe_id
+      }
+
+      steps {
+        id
+        description
+        recipe_id
+        step_number
+      }
+      category {
+        image
+        name
+        id
+      }
+
+      ratings {
+        comment
+        id
+        value
+        user {
+          id
+          email
+          firstname
+          lastname
+        }
+      }
+    }
+  }
+`;
+
+export const GET_RECIPE_BY_PREPARATIONTIME = gql`
+  query getRecipe($preparation_time: Int!) {
+    recipe(where: { preparation_time: { _lte: $preparation_time } }) {
+      id
+      title
+      description
+      image1
+      image2
+      image3
+      preparation_time
+      cooking_time
+      user_id
+      category_id
+      created_at
+      updated_at
+      ingredients {
+        amount
+        name
+        id
+        recipe_id
+      }
+
+      steps {
+        id
+        description
+        recipe_id
+        step_number
+      }
+      category {
+        image
+        name
+        id
+      }
+
+      ratings {
+        comment
+        id
+        value
+        user {
+          id
+          email
+          firstname
+          lastname
+        }
+      }
+    }
+  }
+`;
+
 export const GET_RECIPE_BY_CATEGORY = gql`
   query getRecipe($category_id: Int) {
     recipe(

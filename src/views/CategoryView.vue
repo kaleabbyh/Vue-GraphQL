@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-100">
     <div class="mx-20 flex items-center justify-center mt-24">
-      <h1 class="text-4xl font-bold text-gray-700 pt-10">Categories</h1>
+      <h1 class="text-4xl font-semibold text-gray-700 pt-10">Categories</h1>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-10 md:mx-20 my-5 p-10">
       <div
@@ -17,14 +17,11 @@
           />
         </div>
         <div class="p-4 w-2/3">
-          <h2 class="text-lg font-semibold mb-2 uppercase">
+          <h2 class="text-lg font-medium mb-2 uppercase">
             {{ category.name }}
           </h2>
           <p class="text-gray-600 my-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec leo
-            urna. Donec accumsan ligula ut metus fringilla, eget pulvinar tellus
-            ullamcorper. Duis sit amet dui maximus, efficitur eros non, porta
-            sapien. Sed fringilla, tortor non posuere volutpat,
+            {{ category.description.slice(0, 100) }}...
           </p>
           <router-link
             :to="`/recipes/${category.id}`"
