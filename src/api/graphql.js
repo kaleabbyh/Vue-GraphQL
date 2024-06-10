@@ -646,3 +646,37 @@ export const ADD_RATING = gql`
     }
   }
 `;
+
+export const ADD_RATING = gql`
+  mutation MyMutation(
+    $value: Int
+    $comment: String
+    $recipe_id: Int
+    $user_id: Int
+  ) {
+    insert_rating(
+      objects: {
+        value: $value
+        comment: $comment
+        recipe_id: $recipe_id
+        user_id: $user_id
+      }
+    ) {
+      returning {
+        id
+        value
+        comment
+        user_id
+        recipe_id
+        recipe {
+          title
+        }
+        user {
+          firstname
+          lastname
+          email
+        }
+      }
+    }
+  }
+`;
